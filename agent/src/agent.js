@@ -13,6 +13,22 @@ import * as kibble from "./kibble.js";
 import * as web from "./web.js";
 
 const MEM_FILE = path.join(AGENT_DIR, "data", "memory.json");
+
+// Mọi DID có trên máy này (data/*.json). Agent KHÔNG BAO GIỜ chấm hay nhận việc của các DID này:
+// tự chấm bài của chính mình bằng DID khác = "manufactured activity", Flop loại thẳng tài khoản.
+function ownedDids() {
+  const dir = path.join(AGENT_DIR, "..", "data");
+  const out = new Set();
+  try {
+    for (const f of fs.readdirSync(dir).filter((f) => f.endsWith(".json"))) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")).did;
+        if (d) out.add(d);
+      } catch {}
+    }
+  } catch {}
+  return out;
+}
 export const today = () => new Date().toISOString().slice(0, 10);
 
 // ---------- Bộ nhớ dài hạn (file data/memory.json) ----------
@@ -21,7 +37,10 @@ export function loadMemory() {
   try {
     m = JSON.parse(fs.readFileSync(MEM_FILE, "utf8"));
   } catch {}
-  return { judged: {}, worked: {}, days: {}, notes: [], ...m };
+  const out = { judged: {}, worked: {}, skipped: {}, days: {}, notes: [], ...m };
+  // việc đã bỏ chỉ nhớ 3 ngày (đề có thể được sửa lại)
+  for (const [k, v] of Object.entries(out.skipped)) if (Date.now() - Date.parse(v.at) > 3 * 86400_000) delete out.skipped[k];
+  return out;
 }
 function saveMemory(m) {
   fs.mkdirSync(path.dirname(MEM_FILE), { recursive: true });
@@ -44,9 +63,10 @@ Each run handles exactly ONE job, then ends automatically. Pick the most valuabl
 1. If you hold a claimed job not yet delivered → finish it (research → submit_result).
 2. Else pick an open job you can complete WELL. RESEARCH FIRST, CLAIM LAST:
    list_open_jobs → read_job → web_search → read_page (with find=keywords) until you have the exact answer
-   quoted from an official source → claim_job → submit_result. If you cannot find it, skip the job (do not claim).
+   quoted from an official source → claim_job → submit_result. If you cannot do it well, call skip_job (do not claim)
+   so you never look at it again.
 3. Else judge one delivered job: list_jobs → read_job → verify facts if unsure → attest.
-4. If nothing is worth doing, call finish.
+4. Call finish only after you checked BOTH list_open_jobs and list_jobs and nothing is worth doing.
 
 WORKER rules:
 - Only claim a job you will actually finish now. Skip vague jobs or jobs needing private data, accounts, payments or real-world actions.
@@ -63,6 +83,8 @@ WORKER rules:
 - If claim_job says someone else got it, pick another job.
 - If submit_result is BLOCKED, fix it (read the source with find, copy exact quotes) and resubmit. Never abandon a claimed job.
 - Explanations and code need no evidence; illustrative example numbers are fine there.
+- Code/commands: re-check edge cases against the exact spec (dates, week boundaries, units) before submitting.
+  If the spec is ambiguous, skip_job instead of guessing.
 
 VALIDATOR rules:
 - "useful" only if the result concretely satisfies the success condition. "not" if it is a template ("Auto-delivered...",
@@ -103,6 +125,10 @@ const TOOLS = [
     verdict: { type: "string", enum: ["useful", "not"] },
     reason: { type: "string", description: "one specific sentence, max 220 chars, English" },
   }, ["job_id", "verdict", "reason"]),
+  fn("skip_job", "Remember that this open job is not worth doing, so it is hidden from list_open_jobs from now on.", {
+    job_id: { type: "string" },
+    reason: { type: "string", description: "short reason" },
+  }, ["job_id", "reason"]),
   fn("save_note", "Save one durable lesson to long-term memory (max 150 chars).", { note: { type: "string" } }, ["note"]),
   fn("finish", "End this session.", { summary: { type: "string", description: "1-2 sentences, Vietnamese" } }, ["summary"]),
 ];
@@ -123,6 +149,15 @@ export async function runSession(cfg, id, log = console.log) {
   const convId = `kibble-${id.did.slice(-8)}-${Date.now()}`;
   const done = []; // việc xong trong vòng này (0 hoặc 1)
   const webUses = {};
+  for (const [k, w] of Object.entries(mem.worked)) {
+    if (w.status !== "claimed") continue;
+    w.tries = (w.tries || 0) + 1;
+    if (w.tries > 2) {
+      w.status = "abandoned";
+      mem.log = [...(mem.log || []), `abandoned ${k} after 2 failed runs`].slice(-20);
+      log(`  🗑️  bỏ việc ${k} (2 vòng không nộp được)`);
+    }
+  }
   const claimed = new Set(Object.keys(mem.worked).filter((k) => mem.worked[k].status === "claimed"));
   let summary = "";
   mem.log ||= [];
@@ -142,6 +177,7 @@ export async function runSession(cfg, id, log = console.log) {
     { role: "user", content: goal() },
   ];
 
+  const mine = ownedDids().add(id.did);
   const findJob = async (job_id) => (await kibble.board()).jobs.find((x) => x.job_id === job_id);
   const webBudget = (key) => (webUses[key] = (webUses[key] || 0) + 1) > 6;
 
@@ -159,7 +195,7 @@ export async function runSession(cfg, id, log = console.log) {
     },
     async list_open_jobs({ limit = 10 }) {
       const rows = (await kibble.board()).jobs
-        .filter((j) => j.status === "open" && j.poster_did !== id.did && !mem.worked[j.job_id])
+        .filter((j) => j.status === "open" && !mine.has(j.poster_did) && !mem.worked[j.job_id] && !mem.skipped[j.job_id])
         .slice(0, Math.min(limit, 15))
         .map((j) => `${j.job_id} | ${j.category} | ${cut(j.title, 110)}`);
       return rows.join("\n") || "No open jobs right now.";
@@ -167,7 +203,7 @@ export async function runSession(cfg, id, log = console.log) {
     async list_jobs({ limit = 10 }) {
       const rows = (await kibble.board()).jobs
         .filter((j) => j.status === "delivered" || (j.status === "attested" && (j.useful_n || 0) + (j.not_n || 0) < 2))
-        .filter((j) => j.result && !mem.judged[j.job_id] && !mem.worked[j.job_id] && j.poster_did !== id.did && j.worker_did !== id.did)
+        .filter((j) => j.result && !mem.judged[j.job_id] && !mem.worked[j.job_id] && !mine.has(j.poster_did) && !mine.has(j.worker_did))
         .slice(0, Math.min(limit, 15))
         .map((j) => `${j.job_id} | ${cut(j.title, 90)} | result: ${cut(j.result, 90)} | useful ${j.useful_n || 0} / not ${j.not_n || 0}`);
       return rows.join("\n") || "No delivered jobs waiting right now.";
@@ -196,7 +232,7 @@ export async function runSession(cfg, id, log = console.log) {
       if (claimed.size) return `BLOCKED: deliver your claimed job ${[...claimed][0]} first.`;
       const j = await findJob(job_id);
       if (!j || j.status !== "open") return "Not open anymore. Pick another job.";
-      if (j.poster_did === id.did) return "BLOCKED: own job.";
+      if (mine.has(j.poster_did)) return "BLOCKED: own job (a DID on this machine).";
       const r = await kibble.post(id, `CLAIM v1 | ${job_id} | worker`);
       if (!r.ok) return `Kibble refused: ${r.error || r.http}. Pick another job.`;
       const after = await findJob(job_id);
@@ -242,7 +278,7 @@ export async function runSession(cfg, id, log = console.log) {
       if (mem.judged[job_id]) return "BLOCKED: you already judged this job.";
       const j = await findJob(job_id);
       if (!j) return "BLOCKED: job not found.";
-      if (j.worker_did === id.did || j.poster_did === id.did || mem.worked[job_id]) return "BLOCKED: own job.";
+      if (mine.has(j.worker_did) || mine.has(j.poster_did) || mem.worked[job_id]) return "BLOCKED: own job (a DID on this machine).";
       const why = cut(oneLine(reason), 220);
       const r = await kibble.post(id, `ATTEST v1 | ${job_id} | ${verdict} | rh:${j.result_hash} | ${why}`);
       if (!r.ok) return `Kibble refused: ${r.error || r.http}`;
@@ -252,6 +288,10 @@ export async function runSession(cfg, id, log = console.log) {
       mem.log = [...mem.log, `attested ${job_id} ${verdict}`].slice(-20);
       log(`  ✍️  chấm ${job_id} → ${verdict}`);
       return "Posted.";
+    },
+    async skip_job({ job_id, reason }) {
+      mem.skipped[job_id] = { at: new Date().toISOString(), reason: cut(reason, 100) };
+      return "Skipped. Pick another job, or judge one with list_jobs.";
     },
     async save_note({ note }) {
       mem.notes = [...mem.notes, cut(note, 150)].slice(-20);

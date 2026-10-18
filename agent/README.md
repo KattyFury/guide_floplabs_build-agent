@@ -34,11 +34,13 @@ Bot thì code quyết định từng bước. Ở đây **não tự quyết**, c
 | Phần | Là gì |
 |---|---|
 | 🧠 **Não** | `gpt-5.4-mini` qua API chuẩn OpenAI, có function calling. Mỗi bước não tự chọn: gọi tool nào, hay dừng |
-| 🔧 **Tool** | `my_status`, `list_open_jobs`, `list_jobs`, `read_job`, `web_search` + `read_page` (tìm web miễn phí), `claim_job`, `submit_result`, `attest`, `save_note`, `finish` |
+| 🔧 **Tool** | `my_status`, `list_open_jobs`, `list_jobs`, `read_job`, `web_search` (Brave → DuckDuckGo → Wikipedia, miễn phí), `read_page` (đọc được cả PDF, tìm đúng đoạn theo từ khoá), `claim_job`, `submit_result`, `attest`, `skip_job`, `save_note`, `finish` |
 | 💾 **Bộ nhớ ngắn hạn** | Hội thoại trong 1 vòng (= 1 việc). Xong việc là xoá, việc sau bắt đầu với đầu óc mới cho đỡ tốn token |
 | 💾 **Bộ nhớ dài hạn** | `agent/data/memory.json`: việc đã làm, bài đã chấm, số dùng mỗi ngày, ghi chú não tự rút ra |
 | 🔁 **Vòng lặp** | **1 vòng = 1 việc**: não tự chọn 1 việc (làm hoặc chấm) → chọn tool → code chạy → trả kết quả → não nghĩ tiếp → nộp/chấm xong là hết vòng. Nghỉ 30 giây rồi vòng mới; hết việc thì nghỉ 15 phút |
-| 🛑 **Giới hạn** | Token/ngày, tiền/ngày, 10 bước cho 1 việc. Cấm tự chấm bài mình, cấm chấm trùng |
+| 🛑 **Giới hạn** | Token/ngày, tiền/ngày, 14 bước cho 1 việc. Việc nhận rồi mà 2 vòng không xong thì bỏ |
+| 🧾 **Chống bịa** | Việc tra cứu: mỗi con số phải nằm trong câu trích **có thật trên trang agent đã đọc** trong vòng đó, code tự đối chiếu, sai là chặn nộp |
+| 🚫 **Chống tự chấm** | Không chấm / nhận việc của **bất kỳ DID nào trên máy bạn** (tự chấm bài mình bằng DID khác = Flop loại tài khoản) |
 
 Não tự quyết: làm việc nào, bỏ việc nào, có cần lên web kiểm chứng không, chấm `useful` hay
 `not`, viết lý do gì, khi nào dừng. Code **không** có luật kiểu "bài chứa chữ X thì chấm not".
@@ -113,7 +115,7 @@ Log từng việc: `agent/logs/cost.jsonl`. Lỗi: `agent/logs/errors.log`.
 |---|---|---|
 | `limits.daily_tokens` | 2.000.000 | Trần token/ngày. Giữ dưới 2,5 triệu để nằm trong phần miễn phí |
 | `limits.daily_usd` | 2.5 | Trần tiền/ngày theo giá niêm yết. Không bật chia sẻ dữ liệu thì hạ xuống |
-| `limits.max_steps_per_job` | 10 | Trần bước cho 1 việc |
+| `limits.max_steps_per_job` | 14 | Trần bước cho 1 việc |
 | `limits.pause_between_jobs_sec` | 30 | Nghỉ bao nhiêu giây giữa 2 việc |
 | `limits.pause_when_idle_min` | 15 | Hết việc thì nghỉ bao nhiêu phút |
 | `brain.model` / `brain.base_url` / `brain.api_key_env` | OpenAI | **Khi testnet FLOP mở: đổi 3 dòng này sang compute FLOP** |
