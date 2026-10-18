@@ -1,6 +1,8 @@
 # AGENTS.md — dành cho AI (Cursor) cài Agent Kibble cho người dùng
 
-Người dùng gõ kiểu "cài agent cho mình" / "làm theo repo này" → làm đúng các bước dưới đây.
+Người dùng gửi link repo này kèm câu kiểu "đọc repo rồi build cho tôi" / "cài agent cho mình" → làm đúng các bước dưới đây.
+
+⚠️ "Build" ở đây = CÀI ĐẶT agent CÓ SẴN trong repo, KHÔNG phải viết agent mới. Không tự viết code, không tạo project mới.
 
 ## Cách nói chuyện
 
@@ -19,8 +21,13 @@ Người dùng gõ kiểu "cài agent cho mình" / "làm theo repo này" → là
 
 ## Các bước (làm đúng thứ tự)
 
-0. Nếu workspace chưa phải repo này: clone `https://github.com/KattyFury/guide_floplabs_build-agent.git`
-   rồi bảo người dùng mở thư mục đó trong Cursor (File → Open Folder) và gõ lại "cài agent cho mình".
+0. Lấy repo về máy (nếu workspace chưa phải repo này):
+   - Kiểm tra Git: `git --version`. Chưa có → hướng dẫn cài Git for Windows ở git-scm.com (bấm Next liên tục là được),
+     cài xong thì mở lại Cursor.
+   - Thư mục đang mở còn trống → `git clone https://github.com/KattyFury/guide_floplabs_build-agent.git .`
+     (có dấu chấm ở cuối = clone thẳng vào đây). Không trống → clone vào thư mục con `guide_floplabs_build-agent`
+     và chạy MỌI lệnh sau trong thư mục đó.
+   - Đọc file `AGENTS.md` này trong repo vừa clone rồi làm tiếp từ bước 1.
 1. Kiểm tra Node.js: `node -v`. Chưa có hoặc dưới bản 20 → hướng dẫn cài bản LTS ở nodejs.org, từng nút bấm.
 2. Hướng dẫn lấy key OpenAI: platform.openai.com → Billing nạp $5 → Data controls → Sharing bật chia sẻ dữ liệu
    (được 2,5 triệu token miễn phí/ngày; nói rõ OpenAI được dùng dữ liệu để huấn luyện) → API keys → Create new secret key.

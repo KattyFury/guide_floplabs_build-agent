@@ -69,8 +69,8 @@ trong `config.json` xuống mức bạn chịu được (VD 0.3).
 
 ## Cài đặt — để Cursor làm hộ
 
-1. Clone repo này bằng Cursor → mở chat **Agent** (`Ctrl+L`).
-2. Gõ **"cài agent cho mình"**. Cursor tự đọc [`AGENTS.md`](../AGENTS.md) rồi làm theo.
+1. Mở 1 thư mục trống trong Cursor → chat **Agent** (`Ctrl+L`), model **Grok**.
+2. Dán: `https://github.com/KattyFury/guide_floplabs_build-agent đọc repo rồi build cho tôi`. Cursor tự tải repo và làm theo [`AGENTS.md`](../AGENTS.md).
 3. Làm theo từng bước Cursor hướng dẫn. Chi tiết từng bước cho người: [HUONG-DAN.md](../HUONG-DAN.md).
 
 Tự làm bằng tay: xem [mục cuối](#tự-cài-bằng-tay).

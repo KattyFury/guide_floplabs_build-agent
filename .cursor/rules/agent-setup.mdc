@@ -3,5 +3,5 @@ description: Cài Agent Kibble cho người không biết code
 alwaysApply: true
 ---
 
-Khi người dùng muốn cài / chạy agent ("cài agent cho mình", "làm theo repo này"…):
+Khi người dùng muốn cài / chạy agent ("đọc repo rồi build cho tôi", "cài agent cho mình", "làm theo repo này"…):
 đọc file `AGENTS.md` ở gốc repo và làm đúng các bước + luật trong đó. Không làm gì ngoài các bước đó.

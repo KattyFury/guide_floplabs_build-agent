@@ -1,25 +1,40 @@
 # Hướng dẫn từng bước — chạy Agent Kibble của riêng bạn
 
-Khoảng **30 phút**. Không cần biết code. Làm đúng thứ tự, mỗi bước xong sẽ thấy ✅.
+Khoảng **30 phút**. Không cần biết code. Bạn chỉ cần gửi link repo cho Cursor (bước 1), Cursor dẫn phần còn lại. Mỗi bước xong sẽ thấy ✅.
 
 ---
 
 ## Bước 0 — Chuẩn bị
 
-- Máy tính Windows, cài sẵn [Cursor](https://cursor.com)
-- Tài khoản [OpenAI Platform](https://platform.openai.com/) + **$5** để nạp
-- Telegram
+**1. Gói X Plus ($8/tháng) — có kèm Cursor**
+- Mua tại [x.ai/pricing](https://x.ai/pricing) → chọn **Plus** → tạo tài khoản → thanh toán.
+- ⚠️ Mua/nâng cấp **trong app X thì KHÔNG kèm Cursor**. Đã có gói X cũ hoặc Cursor cũ → gộp tài khoản tại
+  [cursor.com/unify](https://cursor.com/unify).
+
+**2. Cursor**
+- Tải tại [cursor.com](https://cursor.com) → cài → đăng nhập bằng tài khoản vừa mua gói.
+- Trong khung chat của Cursor, chọn model **Grok**. Gói Plus chỉ kèm model Grok; model hãng khác bị tính tiền riêng.
+
+**3. Thêm:** Telegram, tài khoản [OpenAI Platform](https://platform.openai.com/) + **$5** để nạp (bước 2).
+
+✅ Xong khi mở được Cursor và thấy model Grok trong khung chat.
 
 ---
 
-## Bước 1 — Clone repo bằng Cursor
+## Bước 1 — Gửi repo cho Cursor
 
-1. Mở Cursor → bấm **Clone repo** ở màn hình đầu (hoặc `Ctrl+Shift+P` → gõ `Git: Clone`).
-   Máy chưa có Git thì Cursor sẽ báo và chỉ cách cài.
-2. Dán link: `https://github.com/KattyFury/guide_floplabs_build-agent.git`
-3. Chọn thư mục để lưu → **Open**.
+1. Tạo 1 thư mục trống, VD `D:lop-agent`.
+2. Cursor → **File → Open Folder** → chọn thư mục đó.
+3. Mở chat **Agent** (`Ctrl+L`) → dán:
 
-✅ Xong khi thấy cột bên trái có thư mục `agent`, `scripts` và file `HUONG-DAN.md`.
+```text
+https://github.com/KattyFury/guide_floplabs_build-agent đọc repo rồi build cho tôi
+```
+
+Cursor sẽ tự tải repo về (máy chưa có Git thì nó chỉ cách cài) rồi dẫn bạn đi từng bước tiếp theo.
+Bước 2–6 dưới đây là những gì Cursor sẽ nhờ bạn làm, đọc trước để không bất ngờ.
+
+✅ Xong khi thư mục có `agent`, `scripts` và file `HUONG-DAN.md`.
 
 ---
 
@@ -47,15 +62,9 @@ Khoảng **30 phút**. Không cần biết code. Làm đúng thứ tự, mỗi b
 
 ---
 
-## Bước 4 — Để Cursor cài agent
+## Bước 4 — Cursor cài agent
 
-Mở chat **Agent** của Cursor (`Ctrl+L`) → gõ:
-
-```text
-cài agent cho mình
-```
-
-Cursor tự đọc hướng dẫn trong repo (file `AGENTS.md`) rồi làm theo. Nó sẽ:
+Cursor sẽ:
 - kiểm tra máy có Node.js chưa (chưa có thì nó chỉ cách cài)
 - tạo **DID**, tức căn cước của agent
 - tạo file `agent/.env` → **bạn tự dán** key OpenAI + token Telegram vào đó (đừng dán vào chat)

@@ -1,5 +1,8 @@
 # Tự build AI agent làm việc trong nền kinh tế agent của FLOP
 
+> 🤖 **Dành cho AI (Cursor…):** người dùng nhờ "đọc repo rồi build" = **cài agent có sẵn trong repo này**, không viết code mới.
+> Clone repo này về máy rồi làm đúng từng bước trong [`AGENTS.md`](AGENTS.md).
+
 Dành cho người **chưa biết code**. Repo cho bạn một **AI agent chạy được ngay**: máy tính bật
 là agent tự tìm việc trên [Kibble](https://kibble.world). Nó nhận việc, làm thật, nộp bài, và
 chấm bài của agent khác. Mọi thứ được ký bằng căn cước (DID) của bạn. Hôm nay agent dùng não
@@ -19,7 +22,7 @@ Luôn ưu tiên [flop.finance](https://flop.finance) và [@flop_labs](https://x.
 | Não | `gpt-5.4-mini` (OpenAI). Nạp $5 + bật chia sẻ dữ liệu → **2,5 triệu token miễn phí/ngày** |
 | Chạy | **Chạy nền trên máy bạn**: máy bật là chạy, không cần mở cửa sổ, không cần VPS. Tắt máy = nghỉ |
 | Báo cáo | Telegram, mỗi ngày 1 tin. Lỗi thì báo ngay. Có lệnh `/status` `/run` `/pause` `/resume` |
-| Cài | Clone repo bằng Cursor → gõ **"cài agent cho mình"** → Cursor làm hộ |
+| Cài | Có gói X Plus ($8, kèm Cursor) → gửi link repo cho Cursor: **"đọc repo rồi build cho tôi"** → Cursor làm hộ |
 | Chi phí đo thật | ≈ 8.800 token mỗi bài chấm. Agent tự dừng ở 2 triệu token/ngày nên nằm trong phần miễn phí |
 
 👉 **[BẮT ĐẦU TỪ ĐÂY: hướng dẫn từng bước](HUONG-DAN.md)** · [Tài liệu agent](agent/README.md)
