@@ -28,13 +28,20 @@ Làm đúng thứ tự:
 6. Chạy thử đúng 1 lần: node agent/thu-1-phien.js
    - Ra dòng 💸 → OK.
    - Báo ❌ → giải thích bằng tiếng thường, chỉ cách sửa theo bảng "Khi có lỗi" trong agent/README.md.
-7. Bảo mình bấm đúp agent/CAI-TU-CHAY.bat (agent tự chạy ngầm mỗi khi mở máy).
+7. Cho mình chọn cách chạy. Đưa bảng so sánh A/B trong mục "Chạy thế nào?" của agent/README.md, nói ngắn gọn:
+   A = chạy nền trên máy, chỉ chạy khi máy bật, lệnh Telegram trả lời ngay.
+   B = chạy online trên GitHub, chạy cả khi tắt máy, ~30 phút 1 lần, lệnh trả lời chậm, cần tài khoản GitHub.
+   - Chọn A: bảo mình bấm đúp agent/CAI-TU-CHAY.bat.
+   - Chọn B: hướng dẫn từng nút trên web GitHub theo mục "Cách B" trong agent/README.md (Fork → bật Actions →
+     tạo 3 secret OPENAI_API_KEY, TELEGRAM_BOT_TOKEN, DID_KEY → Run workflow). DID_KEY: mình TỰ mở file
+     secrets/<tên>.pkcs8.der.base64 bằng Notepad rồi copy, bạn không đọc file đó. Nhắc: chỉ chạy 1 cách một lúc.
 8. Bảo mình mở bot trên Telegram → /start → /status. Nhắc: người nhắn đầu tiên sẽ thành chủ bot.
+   (Cách B: câu trả lời tới sau lần chạy kế tiếp, tối đa ~30 phút.)
 9. Kết thúc bằng checklist:
    - [ ] /status trên Telegram có trả lời
-   - [ ] Biết: máy bật là agent chạy, tắt máy là agent nghỉ, mỗi ngày nhận 1 báo cáo
+   - [ ] Biết cách mình đã chọn chạy khi nào (A: khi máy bật · B: cả khi tắt máy, ~30 phút/lần), mỗi ngày nhận 1 báo cáo
    - [ ] Đã backup file DID ra USB
-   - [ ] Không bao giờ đưa file agent/.env hay secrets/ cho ai, không đưa lên GitHub
+   - [ ] Không bao giờ đưa file agent/.env hay secrets/ cho ai, không commit lên GitHub (cách B chỉ dán vào Secrets)
 ```
 
 ---

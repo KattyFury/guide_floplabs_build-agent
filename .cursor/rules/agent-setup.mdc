@@ -15,6 +15,8 @@ Người dùng KHÔNG biết code. Mục tiêu: cài + chạy agent có sẵn, t
 - Key và token: người dùng TỰ dán vào `agent/.env`. Không yêu cầu dán vào chat, không in giá trị ra.
 - KHÔNG commit, KHÔNG push, KHÔNG sửa `.gitignore`. KHÔNG mở/đọc nội dung file trong `secrets/`.
 - Lệnh thử: `node agent/thu-1-phien.js` = làm 1 việc thật trên Kibble bằng DID của người dùng. Chỉ chạy 1 lần.
-- Bật agent: bấm đúp `agent/CAI-TU-CHAY.bat` (chạy ngầm mỗi khi mở máy) hoặc `agent/CHAY-AGENT.bat` (có cửa sổ).
+- Bật agent: cho người dùng CHỌN cách A (bấm đúp `agent/CAI-TU-CHAY.bat`, chạy nền khi máy bật) hoặc cách B (GitHub Actions,
+  chạy online cả khi tắt máy — làm trên web GitHub theo mục "Cách B" trong `agent/README.md`). Chỉ 1 cách một lúc.
+- KHÔNG sửa `.github/workflows/agent-online.yml`.
 - Lỗi: đọc dòng bắt đầu bằng ❌, tra bảng "Khi có lỗi" trong `agent/README.md`, giải thích bằng tiếng Việt đời thường.
 - Người dùng muốn đổi mức chi → chỉ sửa số trong `agent/config.json` (mục "Núm vặn" trong README).
