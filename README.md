@@ -1,147 +1,130 @@
 # Flop Labs cho người Việt — 3 hướng tham gia trước airdrop $FLOP
 
-`$FLOP` là token của **Flop Network** (Arthur Hayes / Flop Labs): mạng bán sức
-tính GPU cho AI agent, trả bằng $FLOP. Không bán token, không quỹ VC — genesis
-chia cho người **làm việc thật** trên mạng (testnet + chương trình creator).
+Dành cho người **chưa biết code**. Không cần “biết vibe code” — chỉ cần làm
+đúng hướng, cất kỹ file quan trọng, rồi chờ ngày testnet / chương trình KOL.
 
-*Cập nhật 18/10/2026. Hướng dẫn cộng đồng, không liên kết Flop Labs. Số liệu
-lấy từ trang chính thức (draft) và [@flop_labs](https://x.com/flop_labs) — có
-thể đổi.*
+`$FLOP` là tiền của mạng **Flop Network** (Flop Labs / Arthur Hayes): mạng cho
+máy GPU bán sức tính cho AI agent. Không bán token trước. Thưởng cho người
+**làm việc thật** sau này trên mạng.
+
+*Cập nhật 18/10/2026. Hướng dẫn cộng đồng, không phải Flop Labs. Thông tin có
+thể đổi — luôn ưu tiên [@flop_labs](https://x.com/flop_labs).*
 
 ---
 
-## 1. Ba hướng tham gia (chuẩn hiện tại)
+## 1. Ba hướng (nhớ bảng này là đủ)
 
-| # | Hướng | Bạn làm gì hôm nay | Khi nào được tính thưởng |
+| # | Hướng | Việc làm hôm nay | Được tính khi nào |
 |---|---|---|---|
-| **1** | **Tạo DID → chờ testnet (Agent)** | Tạo 1 DID, backup khoá, theo dõi X | Testnet mở: **mua sức tính đã thanh toán** |
-| **2** | **Làm content (KOL / creator)** | Apply form + đăng nội dung hữu ích | Chương trình KOL / ecosystem reserve (leaderboard đang preview) |
-| **3** | **Có GPU → chờ testnet cống hiến (Miner)** | Apply miner, chuẩn bị máy | Testnet mở: **phục vụ inference đã verify** |
+| **1** | **Tạo DID → chờ testnet** | Tạo 1 “căn cước” DID + backup khoá | Testnet mở: dùng làm Agent mua sức tính |
+| **2** | **Làm content** | Viết / quay video + điền form KOL | Chương trình creator / leaderboard (đang preview) |
+| **3** | **Có GPU → chờ testnet** | Đăng ký miner, chuẩn bị máy | Testnet mở: máy chạy inference thật |
 
-Cửa nào cũng **chưa trả tiền ngay** — thưởng gắn mainnet (dự kiến Q1/2027).
-Testnet công bố ~cuối Oct / đầu Nov 2026 (~90 ngày).
+Cả 3 hướng đều **chưa nhận tiền ngay**. Thưởng gắn lúc mạng chính thức
+(dự kiến khoảng Q1/2027). Testnet được nói khoảng cuối tháng 10 / đầu 11/2026.
 
-⚠️ **Lỗi thời — đừng làm theo:** chat / check-in / spam tin trên Technocore
-**không còn** là cách kiếm airdrop. Whitepaper ghi rõ: tạo DID + post message
-**không** tạo allocation. Giữ token, xin faucet, spam = **0 điểm**.
+### Đừng làm theo (lỗi thời)
 
-(Technocore vẫn dùng để **giữ danh tính DID** và thỉnh thoảng có **event riêng**
-có thưởng — xem mục phụ lục. Đó không phải hướng chính.)
+Chat / spam tin trên Technocore **không** còn là cách lấy airdrop.
+Tạo DID chỉ để **có danh tính sẵn**, không phải “điểm” tự động.
 
 ---
 
-## 2. Hướng 1 — Tạo DID, chờ testnet (Agent)
+## 2. Hướng 1 — Tạo DID (bắt đầu từ đây)
 
-**Việc hôm nay**
+**DID** = tờ căn cước của agent trên máy bạn. Có 2 phần:
 
-1. Tạo **đúng 1** DID và backup khoá ra ≥ 2 nơi.
-   - Web (không cần terminal):
-     **[kattyfury.github.io/guide_floplabs_build-on-floplabs](https://kattyfury.github.io/guide_floplabs_build-on-floplabs/)**
-   - Hoặc terminal: xem [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md)
-2. Theo dõi [@flop_labs](https://x.com/flop_labs) — nơi công bố testnet / airdrop.
-3. Không tạo nhiều DID “farm”. Luật: nhiều ví/DID cùng người có thể bị gộp;
-   gian lận = mất trắng. Mất khoá = mất danh tính (repo này từng mất DID gốc vì quên backup).
+- **DID công khai** (dòng chữ `did:key:...`) → share được.
+- **File khoá bí mật** → như mật khẩu nhà. Mất = mất căn cước. Đưa người khác = họ giả làm bạn.
 
-**Khi testnet mở — Agent được tính gì**
+### Cách A — Dùng Cursor + Grok (khuyên dùng nếu bạn không biết code)
 
-| Được tính | Không được tính |
-|---|---|
-| Sức tính **mua thật**, phiên đã thanh toán | Faucet, chỉ giữ token, tự mua của chính mình |
+1. Cài [Cursor](https://cursor.com) và mở app.
+2. Trong Cursor, chọn model **Grok** (dùng API Grok của bạn).
+3. Mở chat **Agent**.
+4. Mở file prompt này, **copy cả khối** trong khung code:
+   **[prompts/cursor-tao-did.md](prompts/cursor-tao-did.md)**
+5. Dán vào chat Agent → Enter → làm đúng checklist agent đưa ra.
+6. Khi xong: bạn phải có DID + biết file khoá nằm đâu + đã **backup ra 2 nơi**.
 
-Pool Agents (draft): **1,2 tỷ $FLOP**, chia theo lượng compute đã mua.
-Thưởng Agent bị khoá: tiêu 3 FLOP trên mạng → mở khoá 1 FLOP (xem
-[airdrop](https://flop.finance/airdrop/)).
+Không cần hiểu lệnh. Agent làm hộ; bạn chỉ duyệt và cất file.
 
-Hiện **chưa** ai tham gia testnet được. Ai bán “RPC / client sớm” = lừa đảo.
+### Cách B — Web (không cần Cursor)
+
+👉 **[Mở trang tạo DID](https://kattyfury.github.io/guide_floplabs_build-on-floplabs/)**  
+Chạy trong trình duyệt, khoá không gửi lên server của chúng tôi.
+
+### Cách C — Tự gõ lệnh (đã biết một chút máy tính)
+
+Xem [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md).
+
+### Sau khi có DID
+
+1. Follow [@flop_labs](https://x.com/flop_labs) — bật thông báo.
+2. **Chỉ tạo 1 DID.** Nhiều căn cước giả dễ bị gộp / mất thưởng.
+3. Khi testnet mở: Agent được tính khi **mua sức tính thật đã thanh toán** —
+   không phải faucet, không phải giữ token suông.
+
+Hiện **chưa** mở testnet cho mọi người. Ai bán “vào sớm / RPC / claim ngay” →
+coi là lừa đảo.
 
 ---
 
-## 3. Hướng 2 — Làm content (KOL / creator)
-
-**Việc hôm nay**
+## 3. Hướng 2 — Làm content
 
 1. Điền form: [flop.finance/apply/kol](https://flop.finance/apply/kol)  
-   (Ô ngôn ngữ không có tiếng Việt → chọn *Other*.)
-2. Ra nội dung giải thích rõ 3 hướng trên cho cộng đồng mình (không spam).
-3. Gom audience vào 1 kênh (X / Telegram) để khi có link referral / leaderboard
-   live là phát ngay.
-4. **Đừng kéo ví ảo.** Điểm hướng tới *certified work* (việc thật), không phải
-   view rẻ.
+   (Không thấy tiếng Việt → chọn *Other*.)
+2. Đăng bài / video giải thích 3 hướng ở mục 1 cho bạn bè (thật, không spam).
+3. Gom mọi người vào 1 nhóm (X / Telegram) để khi có link giới thiệu thì gửi ngay.
+4. Đừng kéo “ví ảo”. Điểm hướng tới việc thật người khác làm, không phải view ảo.
 
-**Đã có / chưa có**
-
-- Đã có: form apply; preview **KOL Leaderboard** (~15/10/2026 trên X) — signup
-  kiểu email → gắn ví → verify social; pool tuần từ quỹ hệ sinh thái **800 triệu
-  $FLOP** (draft).
-- Chưa có: ngày mở chính thức, kích thước pool tuần, cách đo `certified work`.
-
-Submit form **≠** được chọn, **≠** đảm bảo token.
+Leaderboard KOL mới ở mức **xem trước** — chưa phải luật cuối.
 
 ---
 
-## 4. Hướng 3 — Có GPU, chờ testnet cống hiến (Miner)
+## 4. Hướng 3 — Có GPU
 
-**Việc hôm nay**
+1. Đăng ký: [flop.finance/apply/miner](https://flop.finance/apply/miner)
+2. Chuẩn bị máy (thường cần GPU khá mạnh — xem lại trang testnet khi live).
+3. Chờ [@flop_labs](https://x.com/flop_labs) báo ngày mở và phần mềm chính thức.
 
-1. Apply: [flop.finance/apply/miner](https://flop.finance/apply/miner)
-2. Chuẩn bị phần cứng (công bố tham chiếu: GPU ≥ ~16 GB VRAM — kiểm tra lại trang
-   testnet khi live).
-3. Theo dõi [@flop_labs](https://x.com/flop_labs) cho ngày mở và client chính thức.
-
-**Khi testnet mở**
-
-| Được tính | Không được tính |
-|---|---|
-| Inference đã phục vụ và **qua kiểm tra** | Máy chạy không, khai gian |
-
-Pool Miners (draft): **1,2 tỷ $FLOP**, pro rata compute đã verify.
-
-*(Có thêm vai Validator — máy chủ nặng hơn; form
-[apply/validator](https://flop.finance/apply/validator). Người thường ít đi cửa này.)*
+Khi testnet mở: thưởng miner gắn với sức tính **đã chạy và được kiểm tra**.
 
 ---
 
 ## 5. Chọn hướng nào?
 
-| Bạn là… | Làm hướng |
+| Bạn là… | Làm |
 |---|---|
-| Người thường, không GPU, muốn sẵn sàng sớm | **1** — tạo DID + chờ testnet mua compute |
-| Có audience / thích viết / làm video | **2** — content (+ vẫn nên có DID nếu sau này agent) |
-| Có GPU rảnh | **3** — miner (+ có thể kết hợp 1 hoặc 2) |
+| Người thường, chưa biết code | **Hướng 1** (Cursor + prompt) |
+| Thích viết / làm video / có follower | **Hướng 2** (+ nên có DID hướng 1) |
+| Có card đồ họa mạnh | **Hướng 3** |
 
-Có thể làm **song song** 1 + 2. Đừng tốn thời gian cày chat Technocore như airdrop.
-
----
-
-## 6. Né lừa đảo
-
-- **Hiện chưa có FLOP để claim.** “Claim now / presale / KOL bonus” đòi kết nối
-  ví hoặc gửi tiền → lừa đảo.
-- Chỉ tin: [flop.finance](https://flop.finance) và [@flop_labs](https://x.com/flop_labs).
-- Không đưa file khoá DID cho ai (kể cả “support”).
+Làm chung 1 + 2 cũng được. Đừng tốn thời gian cày chat Technocore.
 
 ---
 
-## Phụ lục — Event Technocore (không phải hướng chính)
+## 6. Né lừa đảo (đọc 10 giây)
 
-Thỉnh thoảng Flop Labs mở event trên Technocore có thưởng riêng (đã có Sonnet-2,
-Close Call). Luật thường có **cutoff DID**, vai đăng ký lần đầu, thưởng trả sau
-mainnet. Chat thường ngày ≠ điểm event.
-
-Chi tiết kỹ thuật DID / ký tin / Kibble (bản cũ, chỉ để vận hành identity):
-[guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md) ·
-[data/activity-log.md](data/activity-log.md)
+- Chưa có FLOP để “claim” hôm nay.
+- Chỉ tin [flop.finance](https://flop.finance) và [@flop_labs](https://x.com/flop_labs).
+- Không gửi file khoá DID cho ai.
+- Không chuyển tiền / seed ví cho “support”.
 
 ---
 
-## Nguồn chính thức
+## File trong repo này
 
+| File | Dùng để |
+|---|---|
+| [prompts/cursor-tao-did.md](prompts/cursor-tao-did.md) | **Copy prompt** dán vào Cursor (Hướng 1) |
+| [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md) | Kỹ thuật phụ (terminal) — không bắt buộc |
+| [data/activity-log.md](data/activity-log.md) | Nhật ký chạy thử cũ |
+
+**Nguồn chính thức:**
 [Airdrop](https://flop.finance/airdrop/) ·
 [Testnet](https://flop.finance/testnet/) ·
-[Agent](https://flop.finance/intro/agent/) ·
 [Apply KOL](https://flop.finance/apply/kol) ·
-[Apply miner](https://flop.finance/apply/miner) ·
-[Preview KOL](https://x.com/flop_labs/status/2110628169476981128) ·
-[Close Call kết quả](https://x.com/flop_labs/status/2107289745030357297)
+[Apply miner](https://flop.finance/apply/miner)
 
 [MIT](LICENSE)
