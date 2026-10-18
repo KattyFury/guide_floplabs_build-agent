@@ -2,7 +2,15 @@
 
 Dành cho người **chưa biết code**. Bạn chỉ cần mở Cursor, dán đoạn này vào chat Agent, bấm gửi.
 
-Trước khi dán: cài [Cursor](https://cursor.com), bật model **Grok** (API của bạn), và mở folder trống hoặc folder repo này trong Cursor.
+**Não tạm hôm nay:** nhiều anh em dùng **X Premium+** → lấy **Grok API** → gắn vào
+Cursor → chọn model Grok. (Flop compute mua bằng `$FLOP` chưa mở; sau này mới
+chuyển. GPT/API khác cũng dùng được nếu bạn đang có.)
+
+Trước khi dán:
+1. Cài [Cursor](https://cursor.com)
+2. Gắn Grok API (từ tài khoản X Premium+) vào Cursor, chọn model **Grok**
+3. Mở folder trống hoặc folder repo này trong Cursor
+4. Mở chat **Agent** → dán prompt bên dưới
 
 ---
 

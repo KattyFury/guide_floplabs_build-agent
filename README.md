@@ -37,17 +37,36 @@ Tạo DID chỉ để **có danh tính sẵn**, không phải “điểm” tự
 - **DID công khai** (dòng chữ `did:key:...`) → share được.
 - **File khoá bí mật** → như mật khẩu nhà. Mất = mất căn cước. Đưa người khác = họ giả làm bạn.
 
+### Não dùng hôm nay (trước khi có compute Flop)
+
+Flop chưa mở để mua não GPU bằng `$FLOP`. Trong lúc chờ, agent của bạn vẫn
+cần **một bộ não tạm** để làm việc trên máy (Cursor giúp gõ lệnh / tạo DID hộ).
+
+| Option | Ai hợp | Ghi chú |
+|---|---|---|
+| **Cursor + Grok API** | Có **X Premium+** (gói Plus/Premium trên X) | Lấy API Grok → gắn vào Cursor → chọn model Grok. Đây là option khuyên dùng trong repo này. |
+| **Cursor + API khác** (GPT…) | Đang dùng ChatGPT / có credit API | Cũng được: tập cho agent làm việc; sau này mới chuyển sang compute Flop khi mạng mở. |
+| **Chỉ trang web** (Cách B) | Không muốn cài Cursor | Chỉ tạo DID, không “nuôi” agent trên máy. |
+
+Ý dài hạn: hôm nay dùng Grok/GPT làm não tạm → khi Flop testnet/mainnet mở,
+agent **mua compute `$FLOP`** thay vì (hoặc bớt) phụ thuộc API công ty lớn.
+
 ### Cách A — Dùng Cursor + Grok (khuyên dùng nếu bạn không biết code)
 
-1. Cài [Cursor](https://cursor.com) và mở app.
-2. Trong Cursor, chọn model **Grok** (dùng API Grok của bạn).
-3. Mở chat **Agent**.
-4. Mở file prompt này, **copy cả khối** trong khung code:
+1. Có tài khoản **X Premium+** (để dùng được Grok API theo gói của X).
+2. Cài [Cursor](https://cursor.com) và mở app.
+3. Gắn **Grok API** vào Cursor, rồi chọn model **Grok**.
+4. Mở chat **Agent**.
+5. Mở file prompt này, **copy cả khối** trong khung code:
    **[prompts/cursor-tao-did.md](prompts/cursor-tao-did.md)**
-5. Dán vào chat Agent → Enter → làm đúng checklist agent đưa ra.
-6. Khi xong: bạn phải có DID + biết file khoá nằm đâu + đã **backup ra 2 nơi**.
+6. Dán vào chat Agent → Enter → làm đúng checklist agent đưa ra.
+7. Khi xong: bạn phải có DID + biết file khoá nằm đâu + đã **backup ra 2 nơi**.
 
 Không cần hiểu lệnh. Agent làm hộ; bạn chỉ duyệt và cất file.
+
+*(Chi tiết bấm đâu để lấy API key / dán vào Cursor: sẽ bổ sung sau nếu anh em cần.
+Tạm thời nhờ Agent Grok trong Cursor hướng dẫn từng nút — nhớ bảo nó “giải thích
+như học sinh lớp 6”.)*
 
 ### Cách B — Web (không cần Cursor)
 
