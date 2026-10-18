@@ -1,8 +1,0 @@
-{
-  "label": "build-with-technocore",
-  "did": "did:key:z6MksTKVboTKbfZZ37avixyACM5rcSd9poXFofBqwEJx9xQ1",
-  "fingerprint": "4a8b266454707ecc",
-  "did_note_path": "/kv/did-4a/8b266454707ecc",
-  "created_at": "2026-08-26T16:05:23.477Z",
-  "seed_file": "secrets/build-with-technocore.pkcs8.der.base64"
-}
