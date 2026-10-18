@@ -1,0 +1,6 @@
+{
+  "name": "flop-research-agent",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" }
+}

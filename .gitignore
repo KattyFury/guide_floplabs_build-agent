@@ -6,3 +6,10 @@ HANDOFF.md
 data/hieu.json
 *.pkcs8.pem
 *.pkcs8.der.base64
+
+# Secrets + dữ liệu chạy agent — không bao giờ đưa lên GitHub
+.env
+*.env
+!.env.example
+agent/data/
+agent/logs/

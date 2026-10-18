@@ -1,17 +1,38 @@
-# Flop Labs cho người Việt — 3 hướng tham gia trước airdrop $FLOP
+# Tự build Agent AI của riêng bạn — nuôi bằng gói X hôm nay, compute Flop ngày mai
 
-Dành cho người **chưa biết code**. Stack khuyên dùng: **X Premium+ → Grok API
-→ Cursor**. Không cần “biết vibe code” — chỉ cần làm đúng hướng, cất kỹ file
-quan trọng, rồi chờ ngày testnet / chương trình KOL.
-
-`$FLOP` là tiền của mạng **Flop Network** (Flop Labs / Arthur Hayes): mạng cho
-máy GPU bán sức tính cho AI agent. Không bán token trước. Thưởng cho người
-**làm việc thật** sau này trên mạng.
+Dành cho người **chưa biết code**. Ai có **gói X từ Plus ($8/tháng)** là đã có sẵn
+**Grok API** — "bộ não" để chạy agent của riêng mình — và **Cursor** để AI cài hộ.
+Thay vì chỉ dùng gói X để tắt quảng cáo / cày view, dùng nó nuôi 1 agent làm việc thật.
+Khi mạng **Flop** ([@flop_labs](https://x.com/flop_labs)) mở, agent chuyển sang
+**mua compute `$FLOP`** — và đó chính là việc được tính airdrop.
 
 *Cập nhật 18/10/2026. Hướng dẫn cộng đồng, không phải Flop Labs. Thông tin có
 thể đổi — luôn ưu tiên [@flop_labs](https://x.com/flop_labs).*
 
 ---
+
+## 0. Agent đầu tiên: research kèo (bắt đầu từ đây)
+
+Gửi link X của 1 dự án qua Telegram → agent tự đọc web + X, cho 2 bên tranh luận
+"nên làm / nên né", rồi trả lời gọn kiểu ELI12: **kèo này cá nhân có làm được
+không, có đáng làm không, làm gì tiếp**.
+
+| | |
+|---|---|
+| Não | Grok API (có trong gói X từ Plus) |
+| Cài đặt | Dán 1 prompt vào Cursor → Cursor làm hộ |
+| Chạy | Trên máy bạn — **chạy khi máy bật + cửa sổ agent mở** |
+| Chi phí đo thật | ≈ $0.02 kèo bị loại · ≈ $0.11 kèo research đầy đủ |
+
+👉 **[Hướng dẫn agent](agent/README.md)** · **[Prompt dán vào Cursor](prompts/cursor-cai-agent.md)**
+
+---
+
+# Flop Labs — 3 hướng tham gia trước airdrop $FLOP
+
+`$FLOP` là tiền của mạng **Flop Network** (Flop Labs / Arthur Hayes): mạng cho
+máy GPU bán sức tính cho AI agent. Không bán token trước. Thưởng cho người
+**làm việc thật** sau này trên mạng.
 
 ## 1. Ba hướng (nhớ bảng này là đủ)
 
@@ -38,26 +59,26 @@ Tạo DID chỉ để **có danh tính sẵn**, không phải “điểm” tự
 - **DID công khai** (dòng chữ `did:key:...`) → share được.
 - **File khoá bí mật** → như mật khẩu nhà. Mất = mất căn cước. Đưa người khác = họ giả làm bạn.
 
-### Não hôm nay = tận dụng X Premium+ (trước khi có compute Flop)
+### Não hôm nay = tận dụng gói X (Plus trở lên), trước khi có compute Flop
 
 Flop chưa mở để mua não GPU bằng `$FLOP`. Repo này **chỉ hướng dẫn một đường**:
 
-**X Premium+ → Grok API → Cursor Agent → tạo DID / nuôi agent trên máy.**
+**Gói X (Plus trở lên) → Grok API → Cursor Agent → tạo DID / nuôi agent trên máy.**
 
 | Bước | Việc làm (đời thường) |
 |---|---|
-| 1 | Có gói **X Premium+** trên [x.com](https://x.com) (để dùng Grok / lấy API) |
+| 1 | Có **gói X từ Plus trở lên** trên [x.com](https://x.com) (để dùng Grok / lấy API) |
 | 2 | Cài [Cursor](https://cursor.com) — app để AI làm hộ việc trên máy |
 | 3 | Lấy **Grok API key** từ phía X/Grok → dán vào Cursor → chọn model **Grok** |
 | 4 | Mở chat **Agent**, dán prompt ở dưới → Agent tạo DID hộ bạn |
 | 5 | Backup file khoá. Follow [@flop_labs](https://x.com/flop_labs) chờ testnet |
 
-Ý dài hạn: hôm nay dùng **não Grok (qua X Premium+)** → khi Flop mở, agent
+Ý dài hạn: hôm nay dùng **não Grok (qua gói X)** → khi Flop mở, agent
 **mua compute `$FLOP`**.
 
-### Cách chính — Cursor + Grok (X Premium+)
+### Cách chính — Cursor + Grok (gói X)
 
-1. Đăng ký / nâng **X Premium+**.
+1. Đăng ký / nâng **gói X (Plus trở lên)**.
 2. Cài [Cursor](https://cursor.com) và mở app.
 3. Gắn **Grok API** vào Cursor, chọn model **Grok**.
 4. Mở chat **Agent**.
@@ -69,7 +90,7 @@ Flop chưa mở để mua não GPU bằng `$FLOP`. Repo này **chỉ hướng d�
 Không cần hiểu lệnh. Agent làm hộ; bạn chỉ duyệt và cất file.
 
 Chưa biết bấm đâu lấy API key? Trong Cursor hỏi Grok:
-*“Hướng dẫn mình lấy Grok API từ X Premium+ rồi dán vào Cursor, từng nút,
+*“Hướng dẫn mình lấy Grok API từ gói X (Plus trở lên) rồi dán vào Cursor, từng nút,
 như nói với học sinh lớp 6.”*
 
 ### Cách phụ — Chỉ cần DID, không nuôi agent bằng Cursor
@@ -77,7 +98,7 @@ như nói với học sinh lớp 6.”*
 👉 **[Trang web tạo DID](https://kattyfury.github.io/guide_floplabs_build-agent/)**  
 (hoặc [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md) nếu tự gõ lệnh).
 
-Repo vẫn **ưu tiên Cách chính (X Premium+)**.
+Repo vẫn **ưu tiên Cách chính (gói X)**.
 
 ### Sau khi có DID
 
@@ -117,7 +138,7 @@ Khi testnet mở: thưởng miner gắn với sức tính **đã chạy và đư
 
 | Bạn là… | Làm |
 |---|---|
-| Người thường, chưa biết code | **Hướng 1** (X Premium+ → Cursor + Grok) |
+| Người thường, chưa biết code | **Hướng 1** (gói X → Cursor + Grok) |
 | Thích viết / làm video / có follower | **Hướng 2** (+ nên có DID hướng 1) |
 | Có card đồ họa mạnh | **Hướng 3** |
 

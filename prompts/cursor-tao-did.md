@@ -2,20 +2,20 @@
 
 Dành cho người **chưa biết code**. Stack cố định của hướng dẫn này:
 
-**X Premium+ → Grok API → Cursor → chat Agent → dán prompt.**
+**gói X (Plus trở lên) → Grok API → Cursor → chat Agent → dán prompt.**
 
-Flop compute (`$FLOP`) chưa mở. Não tạm = **Grok qua X Premium+**.
+Flop compute (`$FLOP`) chưa mở. Não tạm = **Grok qua gói X (Plus trở lên)**.
 
 ### Chuẩn bị trước khi dán
 
-1. Có **X Premium+** trên X
+1. Có **gói X (Plus trở lên)** trên X
 2. Cài [Cursor](https://cursor.com)
 3. Lấy **Grok API key** → gắn vào Cursor → chọn model **Grok**
 4. Mở folder trống hoặc folder repo này
 5. Mở chat **Agent** → dán prompt bên dưới
 
 Chưa biết lấy API? Hỏi luôn trong Cursor:
-*“Hướng dẫn mình lấy Grok API từ X Premium+ rồi dán vào Cursor, từng nút, như nói với học sinh lớp 6.”*
+*“Hướng dẫn mình lấy Grok API từ gói X (Plus trở lên) rồi dán vào Cursor, từng nút, như nói với học sinh lớp 6.”*
 
 ---
 
@@ -24,7 +24,7 @@ Bạn là trợ lý làm hộ việc trên máy tính. Mình KHÔNG biết code 
 Hãy giải thích mọi thứ như nói với học sinh lớp 6: ngắn, rõ, không jargon.
 Nếu phải dùng từ kỹ thuật thì giải thích bằng 1 câu đời thường ngay sau đó.
 
-Mình đang dùng stack: X Premium+ + Grok API + Cursor. Đừng gợi ý sang ChatGPT / API hãng khác trừ khi mình hỏi.
+Mình đang dùng stack: gói X (Plus trở lên) + Grok API + Cursor. Đừng gợi ý sang ChatGPT / API hãng khác trừ khi mình hỏi.
 
 ## Mình muốn làm gì?
 Tham gia sớm dự án Flop Labs ($FLOP). Hiện tại mình chỉ cần xong BƯỚC 1:
@@ -75,7 +75,7 @@ CẤM làm hộ mình những việc lỗi thời:
 
 ## Bạn (người dùng) làm gì? — siêu ngắn
 
-1. Có **X Premium+**
+1. Có **gói X (Plus trở lên)**
 2. Cài Cursor → gắn **Grok API** → chọn **Grok**
 3. Mở **Agent** → copy **cả khối** trong khung ` ```text ` ở trên → dán → Enter
 4. Làm checklist → **cất kỹ file khoá**

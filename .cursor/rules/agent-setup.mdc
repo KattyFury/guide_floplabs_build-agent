@@ -1,0 +1,20 @@
+---
+description: Luật cho Cursor khi cài agent research kèo cho người không biết code
+alwaysApply: true
+---
+
+# Luật cài đặt agent (đọc trước khi làm gì)
+
+Người dùng KHÔNG biết code. Mục tiêu: cài + chạy agent có sẵn, tốn ÍT lượt dùng nhất.
+
+- Agent trong `agent/` đã viết xong và chạy thật. KHÔNG viết lại, KHÔNG refactor, KHÔNG sửa `agent/src/`.
+- Không có thư viện ngoài. KHÔNG chạy `npm install`, KHÔNG thêm package.
+- Đừng đọc cả repo. Chỉ cần `agent/README.md`, `agent/.env.example`, `agent/config.json`.
+- Bỏ qua `scripts/`, `docs/`, `guide/`, `data/` — đó là hướng dẫn DID/Technocore cũ, không liên quan.
+- Key và token: người dùng TỰ dán vào `agent/.env`. Không yêu cầu dán vào chat, không in giá trị ra.
+- KHÔNG commit, KHÔNG push, KHÔNG sửa `.gitignore`.
+- Lệnh thử: `node agent/run.js https://x.com/<handle>`. Lệnh bật bot: bấm đúp `agent/CHAY-AGENT.bat` (hoặc `node agent/bot.js`).
+- Mỗi lần chạy research tốn tiền thật (≈ $0.02–0.11). Chỉ chạy thử 1 lần, không chạy lặp.
+- Lỗi: đọc dòng bắt đầu bằng ❌, tra bảng "Khi có lỗi" trong `agent/README.md`, giải thích bằng tiếng Việt đời thường.
+- Người dùng muốn đổi độ sâu research → chỉ sửa số trong `agent/config.json` (xem mục "Núm vặn" trong README).
+- Người dùng muốn đổi giọng văn / cách chấm điểm → chỉ sửa chữ trong `agent/src/prompts.js`, giữ nguyên định dạng JSON và khung kết luận.
