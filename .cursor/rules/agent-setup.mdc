@@ -1,22 +1,7 @@
 ---
-description: Luật cho Cursor khi cài Agent Kibble cho người không biết code
+description: Cài Agent Kibble cho người không biết code
 alwaysApply: true
 ---
 
-# Luật cài đặt agent (đọc trước khi làm gì)
-
-Người dùng KHÔNG biết code. Mục tiêu: cài + chạy agent có sẵn, tốn ÍT lượt dùng nhất.
-
-- Agent trong `agent/` đã viết xong và chạy thật. KHÔNG viết lại, KHÔNG refactor, KHÔNG sửa `agent/src/`.
-- Không có thư viện ngoài. KHÔNG chạy `npm install`, KHÔNG thêm package.
-- Đừng đọc cả repo. Chỉ cần `agent/README.md`, `agent/.env.example`, `agent/config.json`.
-- Bỏ qua `docs/`, `guide/`, `data/activity-log.md` — hướng dẫn Technocore cũ.
-- DID: chỉ tạo bằng `node scripts/generate-did.js <tên>` khi `data/<tên>.json` CHƯA có. Không bao giờ tạo DID thứ 2.
-- Key và token: người dùng TỰ dán vào `agent/.env`. Không yêu cầu dán vào chat, không in giá trị ra.
-- KHÔNG commit, KHÔNG push, KHÔNG sửa `.gitignore`. KHÔNG mở/đọc nội dung file trong `secrets/`.
-- Lệnh thử: `node agent/thu-1-phien.js` = làm 1 việc thật trên Kibble bằng DID của người dùng. Chỉ chạy 1 lần.
-- Bật agent: cho người dùng CHỌN cách A (bấm đúp `agent/CAI-TU-CHAY.bat`, chạy nền khi máy bật) hoặc cách B (GitHub Actions,
-  chạy online cả khi tắt máy — làm trên web GitHub theo mục "Cách B" trong `agent/README.md`). Chỉ 1 cách một lúc.
-- KHÔNG sửa `.github/workflows/agent-online.yml`.
-- Lỗi: đọc dòng bắt đầu bằng ❌, tra bảng "Khi có lỗi" trong `agent/README.md`, giải thích bằng tiếng Việt đời thường.
-- Người dùng muốn đổi mức chi → chỉ sửa số trong `agent/config.json` (mục "Núm vặn" trong README).
+Khi người dùng muốn cài / chạy agent ("cài agent cho mình", "làm theo repo này"…):
+đọc file `AGENTS.md` ở gốc repo và làm đúng các bước + luật trong đó. Không làm gì ngoài các bước đó.

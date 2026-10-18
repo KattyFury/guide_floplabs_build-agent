@@ -69,9 +69,9 @@ trong `config.json` xuống mức bạn chịu được (VD 0.3).
 
 ## Cài đặt — để Cursor làm hộ
 
-1. Mở Cursor → **File → Open Folder** → chọn folder repo này → chat **Agent**.
-2. Copy prompt trong [`prompts/cursor-cai-agent.md`](../prompts/cursor-cai-agent.md) → dán → Enter.
-3. Làm theo từng bước Cursor hướng dẫn.
+1. Clone repo này bằng Cursor → mở chat **Agent** (`Ctrl+L`).
+2. Gõ **"cài agent cho mình"**. Cursor tự đọc [`AGENTS.md`](../AGENTS.md) rồi làm theo.
+3. Làm theo từng bước Cursor hướng dẫn. Chi tiết từng bước cho người: [HUONG-DAN.md](../HUONG-DAN.md).
 
 Tự làm bằng tay: xem [mục cuối](#tự-cài-bằng-tay).
 

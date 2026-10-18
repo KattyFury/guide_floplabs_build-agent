@@ -19,10 +19,10 @@ Luôn ưu tiên [flop.finance](https://flop.finance) và [@flop_labs](https://x.
 | Não | `gpt-5.4-mini` (OpenAI). Nạp $5 + bật chia sẻ dữ liệu → **2,5 triệu token miễn phí/ngày** |
 | Chạy | Chọn 1 trong 2: **A.** chạy nền trên máy (máy bật là chạy) · **B.** chạy online miễn phí trên GitHub Actions (cả khi tắt máy). Không cần VPS |
 | Báo cáo | Telegram, mỗi ngày 1 tin. Lỗi thì báo ngay. Có lệnh `/status` `/run` `/pause` `/resume` |
-| Cài | Dán 1 prompt vào Cursor → Cursor làm hộ |
+| Cài | Clone repo bằng Cursor → gõ **"cài agent cho mình"** → Cursor làm hộ |
 | Chi phí đo thật | ≈ 8.800 token mỗi bài chấm. Agent tự dừng ở 2 triệu token/ngày nên nằm trong phần miễn phí |
 
-👉 **[BẮT ĐẦU TỪ ĐÂY: hướng dẫn từng bước](HUONG-DAN.md)** · [Tài liệu agent](agent/README.md) · [Prompt dán vào Cursor](prompts/cursor-cai-agent.md)
+👉 **[BẮT ĐẦU TỪ ĐÂY: hướng dẫn từng bước](HUONG-DAN.md)** · [Tài liệu agent](agent/README.md)
 
 ---
 
@@ -91,7 +91,7 @@ Leaderboard KOL mới ở mức **xem trước**, chưa phải luật cuối.
 |---|---|
 | [HUONG-DAN.md](HUONG-DAN.md) | **Hướng dẫn từng bước** cho người mới |
 | [agent/](agent/README.md) | **Agent Kibble** — code + tài liệu tra cứu |
-| [prompts/cursor-cai-agent.md](prompts/cursor-cai-agent.md) | Prompt dán vào Cursor để cài agent |
+| [AGENTS.md](AGENTS.md) | Hướng dẫn cho Cursor (Cursor tự đọc, bạn không cần mở) |
 | [scripts/generate-did.js](scripts/generate-did.js) | Tạo DID |
 | [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md) | Kỹ thuật Technocore (terminal), không bắt buộc |
 | [data/activity-log.md](data/activity-log.md) | Nhật ký chạy thử cũ (tháng 8–9) |

@@ -16,6 +16,7 @@ Khoảng **30 phút**. Không cần biết code. Làm đúng thứ tự, mỗi b
 ## Bước 1 — Clone repo bằng Cursor
 
 1. Mở Cursor → bấm **Clone repo** ở màn hình đầu (hoặc `Ctrl+Shift+P` → gõ `Git: Clone`).
+   Máy chưa có Git thì Cursor sẽ báo và chỉ cách cài.
 2. Dán link: `https://github.com/KattyFury/guide_floplabs_build-agent.git`
 3. Chọn thư mục để lưu → **Open**.
 
@@ -49,13 +50,17 @@ Khoảng **30 phút**. Không cần biết code. Làm đúng thứ tự, mỗi b
 
 ## Bước 4 — Để Cursor cài agent
 
-1. Trong Cursor, mở file `prompts/cursor-cai-agent.md` → copy **cả khối** trong khung ` ```text `.
-2. Mở chat **Agent** của Cursor (`Ctrl+L`) → dán → Enter.
-3. Làm theo Cursor. Nó sẽ:
-   - kiểm tra máy có Node.js chưa (chưa có thì nó chỉ cách cài)
-   - tạo **DID**, tức căn cước của agent
-   - tạo file `agent/.env` → **bạn tự dán** key OpenAI + token Telegram vào đó (đừng dán vào chat)
-   - chạy thử 1 việc thật trên Kibble
+Mở chat **Agent** của Cursor (`Ctrl+L`) → gõ:
+
+```text
+cài agent cho mình
+```
+
+Cursor tự đọc hướng dẫn trong repo (file `AGENTS.md`) rồi làm theo. Nó sẽ:
+- kiểm tra máy có Node.js chưa (chưa có thì nó chỉ cách cài)
+- tạo **DID**, tức căn cước của agent
+- tạo file `agent/.env` → **bạn tự dán** key OpenAI + token Telegram vào đó (đừng dán vào chat)
+- chạy thử 1 việc thật trên Kibble
 
 ✅ Xong khi Cursor chạy thử ra dòng bắt đầu bằng `💸`.
 
