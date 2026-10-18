@@ -71,15 +71,22 @@ Tự làm không cần Cursor? Xem mục [Tự cài bằng tay](#tự-cài-bằn
 
 | Trường hợp | Chi phí 1 kèo | Thời gian |
 |---|---|---|
-| Kèo không làm được (dừng ở cổng lọc) | ≈ $0.02 | 3–6 giây |
-| Kèo làm được (research đầy đủ) | ≈ $0.11–0.16 | 30–55 giây |
+| Kèo không làm được (dừng ở cổng lọc) | ≈ $0.0015 | 3 giây |
+| Kèo làm được (research đầy đủ) | ≈ $0.007 | 30 giây |
+| Research + đọc thêm X (`/x`) | ≈ $0.16 | 30 giây |
 | Hỏi lại kèo đã research trong 7 ngày | $0 (lấy từ bộ nhớ) | tức thì |
 
-Mỗi câu trả lời có dòng `💸` cho biết đúng lần đó tốn bao nhiêu. Gõ `/chiphi`
-để xem tổng hôm nay. Log đầy đủ ở `agent/logs/cost.jsonl`.
+Gói X **Plus** có lượt dùng mỗi tuần ≈ $10 theo giá API (đo thật: $1.28 = 13% lượt
+tuần). Tức là **~1.000+ kèo/tuần** ở chế độ thường, nhưng chỉ ~60 kèo/tuần nếu kèo nào
+cũng `/x`.
 
-Tiền đi đâu: phần lớn là **tìm kiếm** (đọc web ≈ $0.005/lần, đọc bài X ≈ $0.005/bài)
-và chữ đọc từ web. Phần viết kết luận chỉ ≈ $0.005.
+Mỗi câu trả lời có dòng `💸` cho biết đúng lần đó tốn bao nhiêu. Gõ `/chiphi`
+để xem tổng hôm nay. Log đầy đủ ở `agent/logs/cost.jsonl`, lỗi ở `agent/logs/errors.log`.
+
+Vì sao rẻ: agent **tự tìm web miễn phí** (Brave Search, dự phòng DuckDuckGo) và tự
+tải trang về, cắt gọn rồi mới đưa Grok đọc. Tool tìm web/X có sẵn của Grok tính tiền
+mỗi lần tìm ($0.005) và nhét cả trang vào (tốn token) — bản đầu dùng nó tốn $0.11–0.27/kèo.
+Tìm trên X thì không có cách miễn phí, nên chỉ bật khi gõ `/x`.
 
 ---
 
@@ -89,11 +96,13 @@ và chữ đọc từ web. Phần viết kết luận chỉ ≈ $0.005.
 Link X
   │
   ▼
-🚪 Cổng lọc (rẻ): đọc website → cá nhân có làm được không?
+🚪 Cổng lọc: tìm web miễn phí → Grok đọc kết quả → cá nhân có làm được không?
   │      └─ không → trả lời 2 dòng, DỪNG
   ▼
-🔎 Gom dữ liệu: đọc web + X (vốn, team, token, cách tham gia, cờ đỏ)
-  │      └─ đã có token + biết contract → lấy giá/thanh khoản từ DexScreener (miễn phí)
+🔎 Gom dữ liệu MIỄN PHÍ: 4 lượt tìm web (cách tham gia, vốn, token, lừa đảo)
+  │   + tải tối đa 3 trang chính thức, mỗi trang cắt còn 4.000 ký tự
+  │      ├─ đã có token + biết contract → giá/thanh khoản từ DexScreener (miễn phí)
+  │      └─ gõ /x → Grok đọc thêm bài trên X 30 ngày gần nhất (trả phí)
   ▼
 ⚖️ Trọng tài: cân lý do nên làm / nên né, chấm điểm, liệt kê các hướng tham gia,
    viết kết luận ngắn kiểu ELI12
@@ -109,15 +118,15 @@ Mọi thứ chỉnh trong [`config.json`](config.json), không cần sửa code:
 
 | Núm | Hôm nay | Khi có compute Flop |
 |---|---|---|
-| `research.max_tool_calls` — số lần tìm web/X | 4 | 10+ |
-| `research.gather_turns` — số vòng đi tìm | 3 | 5+ |
+| `web.max_pages` — số trang chính thức được đọc | 3 | 10+ |
+| `web.page_chars` — đọc bao nhiêu chữ mỗi trang | 4000 | 20000+ |
+| `web.results_per_query` — số kết quả mỗi lượt tìm | 5 | 10 |
 | `think.model` / `think.base_url` — não suy nghĩ | `grok-4.3` trên xAI | model mở trên Flop |
 | `cache_days` — nhớ kết quả bao lâu | 7 | 1–3 |
 
-Phần **viết kết luận** dùng chuẩn OpenAI, nên khi Flop mở chỉ cần đổi
-`think.base_url` + `think.model` + `think.api_key_env`. Phần **gom dữ liệu**
-đang dùng tool tìm X/web có sẵn của Grok — khi chuyển hẳn khỏi Grok thì phải thay
-bằng tool riêng.
+Cả cổng lọc và bước viết kết luận đều dùng chuẩn OpenAI, nên khi Flop mở chỉ cần đổi
+`think.base_url` + `think.model` + `think.api_key_env` (và `brain.gate_model`).
+Phần tìm web là code của mình, không phụ thuộc Grok. Chỉ `/x` dùng tool riêng của Grok.
 
 ---
 
@@ -127,6 +136,7 @@ bằng tool riêng.
 |---|---|
 | `https://x.com/tenduan` hoặc `@tenduan` | Research kèo đó |
 | `/moi https://x.com/tenduan` | Research lại từ đầu, bỏ qua kết quả cũ |
+| `/x https://x.com/tenduan` | Research + đọc thêm bài trên X (≈ $0.16, đắt gấp ~20 lần) |
 | `/chitiet` | Xem dữ liệu agent đã gom cho kèo vừa hỏi |
 | `/chiphi` | Hôm nay đã tốn bao nhiêu |
 

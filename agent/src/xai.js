@@ -2,7 +2,10 @@
 // - gather(): Responses API của xAI, có tool tìm X + tìm web chạy sẵn bên xAI.
 // - think():  chuẩn OpenAI chat completions — đổi sang nhà cung cấp khác (sau này: Flop)
 //             chỉ bằng cách sửa base_url / model / api_key_env trong config.json.
+import fs from "node:fs";
+import path from "node:path";
 import { recordCall } from "./cost.js";
+import { AGENT_DIR } from "./env.js";
 
 const TICKS_PER_USD = 1e10; // docs xAI: 100_000_000 ticks = 1 cent
 
@@ -41,6 +44,12 @@ async function post(url, key, body) {
       continue;
     }
     if (!res.ok) {
+      // Luôn ghi nguyên văn lỗi vào logs/errors.log để biết chính xác vì sao (VD 402: hết lượt tuần hay giới hạn ngắn hạn)
+      fs.mkdirSync(path.join(AGENT_DIR, "logs"), { recursive: true });
+      fs.appendFileSync(path.join(AGENT_DIR, "logs", "errors.log"), `${new Date().toISOString()} HTTP ${res.status} ${url}
+${text.slice(0, 2000)}
+
+`);
       if (process.env.AGENT_DEBUG) console.error(`[debug] HTTP ${res.status}: ${text.slice(0, 800)}`);
       throw new BrainError(`${explain(res.status, text)} (HTTP ${res.status})`);
     }
@@ -58,7 +67,7 @@ function priceCost(usage, price) {
 export async function gather(cfg, stage, { instructions, input, tools, maxTurns, model, maxToolCalls }) {
   const b = cfg.brain;
   const data = await post(`${b.base_url}/responses`, process.env[b.api_key_env], {
-    model: model || b.gather_model,
+    model: model || b.gate_model,
     instructions,
     input,
     tools,
@@ -94,10 +103,10 @@ export async function gather(cfg, stage, { instructions, input, tools, maxTurns,
 }
 
 // Bước suy nghĩ: không dùng tool, chuẩn OpenAI — phần "ăn compute", sau này chuyển sang Flop.
-export async function think(cfg, stage, { system, user, effort }) {
+export async function think(cfg, stage, { system, user, effort, model }) {
   const t = cfg.think;
   const body = {
-    model: t.model,
+    model: model || t.model,
     messages: [
       { role: "system", content: system },
       { role: "user", content: user },

@@ -55,6 +55,7 @@ Mình sẽ:
 Lệnh:
 /chitiet — xem dữ liệu agent đã gom cho kèo vừa hỏi
 /moi <link> — research lại từ đầu, bỏ qua kết quả cũ
+/x <link> — research + đọc thêm bài trên X (tốn hơn, ~10 lần)
 /chiphi — hôm nay đã tốn bao nhiêu`;
 
 async function handle(msg, cfg) {
@@ -77,13 +78,14 @@ async function handle(msg, cfg) {
   if (text === "/chitiet") return send(chatId, lastDetails.get(chatId) || "Chưa có kèo nào. Gửi link X trước nhé.");
 
   const fresh = text.startsWith("/moi");
-  const h = parseHandle(fresh ? text.slice(4) : text);
+  const withX = text.startsWith("/x ");
+  const h = parseHandle(fresh ? text.slice(4) : withX ? text.slice(3) : text);
   if (!h) return send(chatId, "Mình chưa hiểu. Gửi link X dạng https://x.com/tenduan nhé. Gõ /help để xem hướng dẫn.");
 
   await send(chatId, `⏳ Đang kiểm tra @${h}… (vài giây tới khoảng 1 phút)`);
-  console.log(`→ research @${h}${fresh ? " (mới)" : ""}`);
+  console.log(`→ research @${h}${fresh ? " (mới)" : ""}${withX ? " +X" : ""}`);
   try {
-    const r = await research(cfg, h, { fresh });
+    const r = await research(cfg, h, { fresh, withX });
     lastDetails.set(chatId, r.details);
     const foot = r.fromCache ? "♻️ Kết quả trong 7 ngày qua (không tốn lượt). Gõ /moi để research lại." : costLine(r.cost);
     await send(chatId, `${r.report}\n\n${foot}`);

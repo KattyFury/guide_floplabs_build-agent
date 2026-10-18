@@ -13,7 +13,7 @@ thể đổi — luôn ưu tiên [@flop_labs](https://x.com/flop_labs).*
 
 ## 0. Agent đầu tiên: research kèo (bắt đầu từ đây)
 
-Gửi link X của 1 dự án qua Telegram → agent tự đọc web + X rồi trả lời gọn kiểu
+Gửi link X của 1 dự án qua Telegram → agent tự tìm + đọc web rồi trả lời gọn kiểu
 ELI12: **kèo này cá nhân có làm được không, có đáng làm không, có mấy hướng tham
 gia, người mới nên làm gì tiếp**.
 
@@ -22,7 +22,7 @@ gia, người mới nên làm gì tiếp**.
 | Não | Grok API (có trong gói X từ Plus) |
 | Cài đặt | Dán 1 prompt vào Cursor → Cursor làm hộ |
 | Chạy | Trên máy bạn — **chạy khi máy bật + cửa sổ agent mở** |
-| Chi phí đo thật | ≈ $0.02 kèo bị loại · ≈ $0.11–0.16 kèo research đầy đủ |
+| Chi phí đo thật | ≈ $0.0015 kèo bị loại · ≈ $0.007 kèo research đầy đủ (~1.000+ kèo/tuần với gói Plus) |
 
 👉 **[Hướng dẫn agent](agent/README.md)** · **[Prompt dán vào Cursor](prompts/cursor-cai-agent.md)**
 

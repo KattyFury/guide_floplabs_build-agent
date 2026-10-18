@@ -1,11 +1,10 @@
 {
-  "_ghi_chu": "NÚM VẶN của agent. Hôm nay để thấp cho vừa gói X. Khi Flop mở: tăng max_tool_calls, gather_turns, đổi think sang Flop.",
+  "_ghi_chu": "NÚM VẶN của agent. Hôm nay để thấp cho vừa gói X. Khi Flop mở: tăng web.max_pages / web.page_chars, đổi think sang Flop.",
 
   "brain": {
     "base_url": "https://api.x.ai/v1",
     "api_key_env": "XAI_API_KEY",
     "gate_model": "grok-4.20-0309-non-reasoning",
-    "gather_model": "grok-4.20-0309-non-reasoning",
     "price": { "input": 1.25, "cached": 0.2, "output": 2.5 }
   },
 
@@ -19,16 +18,17 @@
     "price": { "input": 1.25, "cached": 0.2, "output": 2.5 }
   },
 
-  "gate": {
-    "max_turns": 1,
-    "max_tool_calls": 2,
-    "x_days": 60
+  "web": {
+    "_ghi_chu": "Tự tìm (DuckDuckGo) + tự đọc trang — miễn phí. Tăng max_pages/page_chars = đọc kỹ hơn, tốn token hơn.",
+    "results_per_query": 5,
+    "max_pages": 3,
+    "page_chars": 4000
   },
 
-  "research": {
-    "gather_turns": 3,
-    "max_tool_calls": 4,
-    "x_days": 90
+  "x": {
+    "_ghi_chu": "Tìm trên X qua Grok — chỉ chạy khi gõ /x. Tính tiền theo bài (~$0.005/bài).",
+    "days": 30,
+    "max_turns": 1
   },
 
   "cache_days": 7

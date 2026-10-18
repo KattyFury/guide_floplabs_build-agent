@@ -1,10 +1,12 @@
-// Luồng chính: link X → cổng lọc (rẻ) → nếu làm được: gom dữ liệu → trọng tài viết kết luận.
+// Luồng chính: link X → cổng lọc (rẻ) → nếu làm được: tự đọc web miễn phí → trọng tài viết kết luận.
+// Tìm X (trả phí theo bài) chỉ chạy khi người dùng bật: opts.withX.
 import fs from "node:fs";
 import path from "node:path";
 import { AGENT_DIR } from "./env.js";
 import { gather, think, parseJson } from "./xai.js";
 import { startRun, endRun } from "./cost.js";
 import * as P from "./prompts.js";
+import * as web from "./web.js";
 
 const CACHE_FILE = path.join(AGENT_DIR, "data", "cache.json");
 
@@ -59,26 +61,31 @@ async function dexscreener(chain, contract) {
   }
 }
 
-// opts.fresh = true → bỏ qua kết quả cũ trong bộ nhớ.
+// Đọc nhiều trang song song, bỏ trang trống (thường là trang viết toàn bằng JavaScript).
+async function readPages(urls, chars) {
+  const texts = await Promise.all(urls.map((u) => web.readPage(u, chars)));
+  return urls.map((u, i) => (texts[i].length > 200 ? `### ${u}\n${texts[i]}` : "")).filter(Boolean);
+}
+
+// opts.fresh = true → bỏ qua kết quả cũ. opts.withX = true → thêm tìm trên X (tốn hơn).
 export async function research(cfg, handle, opts = {}) {
-  const key = handle.toLowerCase();
+  const key = handle.toLowerCase() + (opts.withX ? ":x" : "");
   const cached = readCache()[key];
   if (!opts.fresh && cached && Date.now() - cached.at < cfg.cache_days * 86400_000) {
     return { ...cached, fromCache: true };
   }
 
-  startRun(handle);
+  startRun(handle + (opts.withX ? " +X" : ""));
   const today = new Date().toISOString().slice(0, 10);
+  const W = cfg.web;
 
-  // 1) Cổng lọc — rẻ: chỉ đọc bài của chính dự án + website.
-  const gateText = await gather(cfg, "gate", {
+  // 1) Cổng lọc — chỉ đọc kết quả tìm miễn phí; Grok bản không suy nghĩ phân loại + chỉ ra website chính thức.
+  const found = await web.search(`${handle} crypto`, W.results_per_query + 3);
+  if (!found.length) throw new Error("Không tìm được web lúc này (máy tìm kiếm đang chặn). Đợi vài phút rồi thử lại.");
+  const gateText = await think(cfg, "gate", {
     model: cfg.brain.gate_model,
-    instructions: P.GATE,
-    input: `Today: ${today}. X handle: @${handle}`,
-    // Chỉ tìm web: bài X tính tiền theo từng bài ($0.005/bài) nên để dành cho bước sau.
-    tools: [{ type: "web_search" }],
-    maxTurns: cfg.gate.max_turns,
-    maxToolCalls: cfg.gate.max_tool_calls,
+    system: P.GATE,
+    user: `Today: ${today}. X handle: @${handle}\n\nWeb search results:\n${web.formatResults(found)}`,
   });
   const gate = parseJson(gateText) || { verdict: "unclear", why: gateText.slice(0, 200) };
 
@@ -90,17 +97,42 @@ export async function research(cfg, handle, opts = {}) {
     return out;
   }
 
-  // 2) Gom dữ liệu — tìm X (không chỉ của dự án) + web.
-  const evidence = await gather(cfg, "gather", {
-    instructions: P.GATHER,
-    input: `Today: ${today}. X handle: @${handle}. Screening: ${gate.name} — ${gate.what}. Website: ${gate.website || "unknown"}.`,
-    tools: [{ type: "x_search", from_date: isoDaysAgo(cfg.research.x_days) }, { type: "web_search" }],
-    maxTurns: cfg.research.gather_turns,
-    maxToolCalls: cfg.research.max_tool_calls,
-  });
-  let facts = `Project: ${gate.name} (@${handle})\n${evidence}`;
+  // 2) Gom dữ liệu MIỄN PHÍ: vài lượt tìm DuckDuckGo + đọc các trang chính thức.
+  const name = gate.name || handle;
+  const queries = [
+    `${name} how to participate testnet airdrop points`,
+    `${name} raised funding investors`,
+    `${name} tokenomics token`,
+    `${name} scam OR hack OR fake`,
+  ];
+  const results = [];
+  for (const q of queries) results.push({ q, r: await web.search(q, W.results_per_query) });
+
+  // Trang để đọc: website + các trang cùng domain (docs, blog…) tìm được.
+  const website = /^https?:\/\//.test(gate.website || "") ? gate.website : "";
+  const root = web.host(website).split(".").slice(-2).join(".");
+  const sameSite = results.flatMap((x) => x.r.map((r) => r.url)).filter((u) => root && web.host(u).endsWith(root));
+  const urls = [...new Set([website, ...sameSite])].filter(Boolean).slice(0, W.max_pages);
+  const pages = await readPages(urls, W.page_chars);
+
+  let facts =
+    `Project: ${name} (@${handle}). Today: ${today}.\n\n` +
+    results.map((x) => `## Search: ${x.q}\n${web.formatResults(x.r) || "none"}`).join("\n\n") +
+    `\n\n## Official pages\n${pages.join("\n\n") || "none readable"}`;
+
   const contractOk = /^0x[0-9a-fA-F]{40}$|^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(gate.contract || "");
-  if (gate.has_token && gate.chain && contractOk) facts += `\n${await dexscreener(gate.chain.toLowerCase(), gate.contract)}`;
+  if (gate.has_token && gate.chain && contractOk) facts += `\n\n${await dexscreener(gate.chain.toLowerCase(), gate.contract)}`;
+
+  // 2b) Tuỳ chọn: tìm trên X qua Grok (trả theo bài ~$0.005/bài).
+  if (opts.withX) {
+    const xNotes = await gather(cfg, "x_search", {
+      instructions: P.GATHER_X,
+      input: `Today: ${today}. Project: ${name}, X handle: @${handle}.`,
+      tools: [{ type: "x_search", from_date: isoDaysAgo(cfg.x.days) }],
+      maxTurns: cfg.x.max_turns,
+    });
+    facts += `\n\n## X (last ${cfg.x.days} days)\n${xNotes}`;
+  }
 
   // 3) Trọng tài viết kết luận ngắn, kiểu ELI12.
   const report = await think(cfg, "judge", { system: P.JUDGE, user: facts, effort: cfg.think.effort });

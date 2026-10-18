@@ -14,7 +14,7 @@ Người dùng KHÔNG biết code. Mục tiêu: cài + chạy agent có sẵn, t
 - Key và token: người dùng TỰ dán vào `agent/.env`. Không yêu cầu dán vào chat, không in giá trị ra.
 - KHÔNG commit, KHÔNG push, KHÔNG sửa `.gitignore`.
 - Lệnh thử: `node agent/run.js https://x.com/<handle>`. Lệnh bật bot: bấm đúp `agent/CHAY-AGENT.bat` (hoặc `node agent/bot.js`).
-- Mỗi lần chạy research tốn tiền thật (≈ $0.02–0.16). Chỉ chạy thử 1 lần, không chạy lặp.
+- Mỗi lần chạy research tốn tiền thật (≈ $0.002–0.01; với --x hoặc /x ≈ $0.16). Chỉ chạy thử 1 lần, không chạy lặp, không dùng --x khi thử.
 - Lỗi: đọc dòng bắt đầu bằng ❌, tra bảng "Khi có lỗi" trong `agent/README.md`, giải thích bằng tiếng Việt đời thường.
 - Người dùng muốn đổi độ sâu research → chỉ sửa số trong `agent/config.json` (xem mục "Núm vặn" trong README).
 - Người dùng muốn đổi giọng văn / cách chấm điểm → chỉ sửa chữ trong `agent/src/prompts.js`, giữ nguyên định dạng JSON và khung kết luận.
