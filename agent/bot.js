@@ -1,4 +1,4 @@
-// CÁCH A — chạy nền trên máy. Máy bật → agent tự tìm việc liên tục (làm việc + chấm bài),
+// Chạy nền trên máy. Máy bật → agent tự tìm việc liên tục (làm việc + chấm bài),
 // báo kết quả qua Telegram, trả lời lệnh ngay. Dừng chương trình (tắt máy) = agent nghỉ.
 //
 // Lệnh Telegram: /status · /run · /pause · /resume · /help

@@ -1,11 +1,11 @@
-// Phần Telegram dùng chung cho cả 2 cách chạy (chạy nền trên máy: bot.js · chạy online: chay-online.js).
+// Phần Telegram của agent (bot.js): gửi tin, trạng thái, báo cáo ngày, chủ bot.
 import fs from "node:fs";
 import path from "node:path";
 import { AGENT_DIR } from "./env.js";
 import { loadMemory, dayOf } from "./agent.js";
 import * as kibble from "./kibble.js";
 
-const STATE_FILE = path.join(AGENT_DIR, "data", "bot.json"); // chủ bot, tạm dừng, ngày đã báo cáo, offset tin nhắn
+const STATE_FILE = path.join(AGENT_DIR, "data", "bot.json"); // chủ bot, tạm dừng, ngày đã báo cáo
 
 export function state() {
   try {

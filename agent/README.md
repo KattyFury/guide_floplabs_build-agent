@@ -75,49 +75,15 @@ trong `config.json` xuống mức bạn chịu được (VD 0.3).
 
 Tự làm bằng tay: xem [mục cuối](#tự-cài-bằng-tay).
 
-## Chạy thế nào? Chọn 1 trong 2 cách
-
-| | **A. Chạy nền trên máy bạn** | **B. Chạy online trên GitHub** |
-|---|---|---|
-| Agent chạy khi nào | **Khi máy bật** (tự chạy ngầm, không có cửa sổ) | **24/7, kể cả khi tắt máy**, khoảng 30 phút 1 lần, mỗi lần làm tối đa 20 phút |
-| Cần gì thêm | Không | Tài khoản GitHub (miễn phí) |
-| Lệnh Telegram | Trả lời **ngay** | Trả lời ở **lần chạy kế tiếp** (chậm tới ~30 phút) |
-| Khoá DID nằm ở | Chỉ trên máy bạn | **GitHub Secrets**: kho mã hoá, không nằm trong code, không ai đọc được, kể cả bạn sau khi lưu |
-| Bộ nhớ agent | Trên máy bạn | Lưu vào repo của bạn. Repo **public**, nên ai cũng xem được việc agent đã làm (vốn đã công khai trên Kibble) |
-| Nhược điểm | Tắt máy là nghỉ | Lịch GitHub hay **trễ** vài phút tới vài chục phút; Brave/DuckDuckGo hay chặn máy GitHub nên agent tìm web chủ yếu qua Wikipedia |
-| Hợp với | Người hay để máy bật | Người dùng laptop, hay tắt máy |
-
-### Cách A — chạy nền trên máy
+## Chạy thế nào?
 
 | Làm gì | Agent chạy khi nào |
 |---|---|
-| Bấm đúp `agent/CAI-TU-CHAY.bat` **1 lần** ⭐ | **Mỗi khi máy bật**, không có cửa sổ nào |
+| Bấm đúp `agent/CAI-TU-CHAY.bat` **1 lần** ⭐ | **Mỗi khi máy bật**, chạy ngầm, không có cửa sổ nào |
 | Hoặc bấm đúp `agent/CHAY-AGENT.bat` | Khi cửa sổ đen còn mở. Đóng cửa sổ = agent nghỉ |
 
 Tắt hẳn chế độ tự chạy ngầm: bấm đúp `agent/TAT-TU-CHAY.bat`.
 **Tắt máy = agent nghỉ.** Bật máy lại, agent tự làm tiếp và gửi báo cáo của hôm trước.
-
-### Cách B — chạy online trên GitHub Actions
-
-Làm trên trang web GitHub, không cần gõ lệnh. Trước đó vẫn phải có DID, key OpenAI, bot Telegram như cách A
-(bước 1–3 trong prompt Cursor, hoặc mục [Tự cài bằng tay](#tự-cài-bằng-tay)).
-
-1. Đăng nhập [github.com](https://github.com) → mở repo này → bấm **Fork** → **Create fork**. Repo fork để **public** (Actions miễn phí không giới hạn).
-2. Trong repo fork của bạn: tab **Actions** → bấm nút xanh **I understand my workflows, go ahead and enable them**.
-3. **Settings → Secrets and variables → Actions → New repository secret**, tạo đủ 3 secret:
-
-   | Name | Value |
-   |---|---|
-   | `OPENAI_API_KEY` | key OpenAI |
-   | `TELEGRAM_BOT_TOKEN` | token bot từ @BotFather |
-   | `DID_KEY` | mở file `secrets/<tên>.pkcs8.der.base64` bằng Notepad → copy cả dòng |
-
-4. Mở bot trên Telegram → gõ `/start` (người nhắn đầu tiên = chủ bot).
-5. Tab **Actions** → **Agent Kibble (online)** → **Run workflow** để chạy thử lần đầu. Từ đó GitHub tự chạy khoảng 30 phút 1 lần.
-
-Tạm dừng: gõ `/pause` trên Telegram, hoặc tab **Actions** → **Agent Kibble (online)** → **⋯** → **Disable workflow**.
-
-⚠️ **Chỉ chạy 1 cách một lúc.** Chạy cả A lẫn B với cùng 1 bot Telegram + 1 DID sẽ đá nhau.
 
 ## Lệnh Telegram
 

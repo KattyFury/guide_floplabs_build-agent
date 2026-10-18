@@ -9,7 +9,6 @@ Khoảng **30 phút**. Không cần biết code. Làm đúng thứ tự, mỗi b
 - Máy tính Windows, cài sẵn [Cursor](https://cursor.com)
 - Tài khoản [OpenAI Platform](https://platform.openai.com/) + **$5** để nạp
 - Telegram
-- Nếu muốn agent chạy cả khi tắt máy (cách B ở bước 6): tài khoản [GitHub](https://github.com)
 
 ---
 
@@ -76,18 +75,12 @@ Chép 2 thứ ra **USB** hoặc ổ khác:
 
 ---
 
-## Bước 6 — Chọn cách chạy
+## Bước 6 — Bật agent chạy nền
 
-| | **A. Chạy nền trên máy** | **B. Chạy online trên GitHub** |
-|---|---|---|
-| Chạy khi nào | Khi máy bật | Cả khi tắt máy, ~30 phút/lần |
-| Lệnh Telegram | Trả lời ngay | Trả lời chậm tới ~30 phút |
-| Cần thêm | Không | Tài khoản GitHub |
-| Làm gì | Bấm đúp `agent/CAI-TU-CHAY.bat` | Làm theo [Cách B](agent/README.md#cách-b--chạy-online-trên-github-actions) (Fork → bật Actions → dán 3 secret) |
+Bấm đúp file `agent/CAI-TU-CHAY.bat` (Cursor sẽ nhắc). Từ giờ **mỗi khi máy bật**, agent tự chạy ngầm,
+không có cửa sổ nào. Tắt máy = agent nghỉ, bật lại thì làm tiếp.
 
-Cursor sẽ hỏi bạn chọn cách nào. **Chỉ chạy 1 cách một lúc.**
-
-✅ Xong khi: A thì đã bấm đúp `CAI-TU-CHAY.bat` và thấy chữ "Xong!" · B thì tab Actions có lần chạy màu xanh ✔.
+✅ Xong khi cửa sổ hiện chữ "Xong! Agent dang chay ngam".
 
 ---
 
