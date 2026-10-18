@@ -1,3 +1,8 @@
 secrets/
 node_modules/
 HANDOFF.md
+
+# Personal DID packs — never commit private keys
+data/hieu.json
+*.pkcs8.pem
+*.pkcs8.der.base64
