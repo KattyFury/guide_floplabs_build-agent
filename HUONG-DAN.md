@@ -7,9 +7,7 @@ Khoảng **30 phút**. Không cần biết code. Bạn chỉ cần gửi link re
 ## Bước 0 — Chuẩn bị
 
 **1. Gói X Plus ($8/tháng) — có kèm Cursor**
-- Mua tại [x.ai/pricing](https://x.ai/pricing) → chọn **Plus** → tạo tài khoản → thanh toán.
-- ⚠️ Mua/nâng cấp **trong app X thì KHÔNG kèm Cursor**. Đã có gói X cũ hoặc Cursor cũ → gộp tài khoản tại
-  [cursor.com/unify](https://cursor.com/unify).
+- Mua ngay trong app X (hoặc tại [x.ai/pricing](https://x.ai/pricing)) → chọn **Plus** → thanh toán.
 
 **2. Cursor**
 - Tải tại [cursor.com](https://cursor.com) → cài → đăng nhập bằng tài khoản vừa mua gói.
