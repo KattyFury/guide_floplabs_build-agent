@@ -184,7 +184,7 @@ async function main() {
   }).catch((e) => console.log(`⚠️ ${e.message}`));
   console.log(`✅ Agent đang chạy: https://t.me/${me.username}`);
   console.log(`   DID: ${id.did}`);
-  console.log("   Tắt máy (hoặc đóng cửa sổ này nếu đang mở) = agent nghỉ.\n");
+  console.log("   Dừng chương trình này (tắt máy / đóng cửa sổ / dừng container) = agent nghỉ.\n");
 
   // Vòng chạy liên tục: mỗi vòng = 1 việc. Xong việc → nghỉ 30 giây rồi làm việc tiếp; hết việc → nghỉ 15 phút; hết token → nghỉ 30 phút.
   (async () => {
