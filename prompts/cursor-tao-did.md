@@ -43,7 +43,7 @@ CẤM làm hộ mình những việc lỗi thời:
 ## Việc bạn phải làm giúp mình (theo thứ tự)
 1. Nói bằng tiếng Việt: bạn sắp làm gì trong 3 câu, rồi hỏi mình OK chưa nếu có bước xoá/ghi đè file.
 2. Nếu máy chưa có repo hướng dẫn thì clone về:
-   https://github.com/KattyFury/guide_floplabs_build-on-floplabs
+   https://github.com/KattyFury/guide_floplabs_build-agent
    rồi chuyển workspace vào folder đó trước khi sửa gì.
 3. Kiểm tra máy có Node.js chưa (công cụ chạy script). Chưa có thì hướng dẫn mình cài bản LTS, từng nút bấm.
 4. Tạo ĐÚNG 1 DID bằng lệnh có sẵn trong repo:

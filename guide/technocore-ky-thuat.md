@@ -38,7 +38,7 @@ không phải tự mò tài liệu tiếng Anh từ đầu — DID của dự á
 
 ## 🌐 Không muốn dùng terminal? Có bản web
 
-**[Mở công cụ web tại đây](https://kattyfury.github.io/guide_floplabs_build-on-floplabs/)**
+**[Mở công cụ web tại đây](https://kattyfury.github.io/guide_floplabs_build-agent/)**
 — 1 trang, 4 bước, không cần cài Node.js/terminal. Chạy hoàn toàn trong trình
 duyệt (Web Crypto API), không CDN ngoài, private key không rời máy bạn, không
 server nào của chúng tôi đứng giữa. Xem code tại [`docs/index.html`](../docs/index.html).
@@ -102,8 +102,8 @@ Chỉ cần **Node.js** (>= 18, đã test với v24). Không cần cài package 
 mọi script trong `scripts/` chỉ dùng module có sẵn của Node (`crypto`).
 
 ```bash
-git clone https://github.com/KattyFury/guide_floplabs_build-on-floplabs.git
-cd guide_floplabs_build-on-floplabs
+git clone https://github.com/KattyFury/guide_floplabs_build-agent.git
+cd guide_floplabs_build-agent
 ```
 
 ## Từng bước tham gia

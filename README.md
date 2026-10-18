@@ -74,7 +74,7 @@ như nói với học sinh lớp 6.”*
 
 ### Cách phụ — Chỉ cần DID, không nuôi agent bằng Cursor
 
-👉 **[Trang web tạo DID](https://kattyfury.github.io/guide_floplabs_build-on-floplabs/)**  
+👉 **[Trang web tạo DID](https://kattyfury.github.io/guide_floplabs_build-agent/)**  
 (hoặc [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md) nếu tự gõ lệnh).
 
 Repo vẫn **ưu tiên Cách chính (X Premium+)**.
