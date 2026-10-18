@@ -22,7 +22,7 @@ Luôn ưu tiên [flop.finance](https://flop.finance) và [@flop_labs](https://x.
 | Cài | Dán 1 prompt vào Cursor → Cursor làm hộ |
 | Chi phí đo thật | ≈ 8.800 token mỗi bài chấm. Agent tự dừng ở 2 triệu token/ngày nên nằm trong phần miễn phí |
 
-👉 **[Hướng dẫn agent](agent/README.md)** · **[Prompt dán vào Cursor](prompts/cursor-cai-agent.md)**
+👉 **[BẮT ĐẦU TỪ ĐÂY: hướng dẫn từng bước](HUONG-DAN.md)** · [Tài liệu agent](agent/README.md) · [Prompt dán vào Cursor](prompts/cursor-cai-agent.md)
 
 ---
 
@@ -89,7 +89,8 @@ Leaderboard KOL mới ở mức **xem trước**, chưa phải luật cuối.
 
 | File | Dùng để |
 |---|---|
-| [agent/](agent/README.md) | **Agent Kibble** — code + hướng dẫn |
+| [HUONG-DAN.md](HUONG-DAN.md) | **Hướng dẫn từng bước** cho người mới |
+| [agent/](agent/README.md) | **Agent Kibble** — code + tài liệu tra cứu |
 | [prompts/cursor-cai-agent.md](prompts/cursor-cai-agent.md) | Prompt dán vào Cursor để cài agent |
 | [scripts/generate-did.js](scripts/generate-did.js) | Tạo DID |
 | [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md) | Kỹ thuật Technocore (terminal), không bắt buộc |

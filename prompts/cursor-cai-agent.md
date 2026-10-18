@@ -3,7 +3,7 @@
 Dành cho người **chưa biết code**. Trước khi dán:
 
 1. Đã nạp $5 + bật chia sẻ dữ liệu trên OpenAI (xem [agent/README.md](../agent/README.md#lấy-api-openai-mà-vẫn-gần-như-miễn-phí))
-2. Mở Cursor → **File → Open Folder** → chọn folder repo này → mở chat **Agent**
+2. Đã clone repo này bằng Cursor (xem [HUONG-DAN.md](../HUONG-DAN.md) bước 1) → mở chat **Agent**
 
 ---
 
