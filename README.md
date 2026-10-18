@@ -1,7 +1,8 @@
 # Flop Labs cho người Việt — 3 hướng tham gia trước airdrop $FLOP
 
-Dành cho người **chưa biết code**. Không cần “biết vibe code” — chỉ cần làm
-đúng hướng, cất kỹ file quan trọng, rồi chờ ngày testnet / chương trình KOL.
+Dành cho người **chưa biết code**. Stack khuyên dùng: **X Premium+ → Grok API
+→ Cursor**. Không cần “biết vibe code” — chỉ cần làm đúng hướng, cất kỹ file
+quan trọng, rồi chờ ngày testnet / chương trình KOL.
 
 `$FLOP` là tiền của mạng **Flop Network** (Flop Labs / Arthur Hayes): mạng cho
 máy GPU bán sức tính cho AI agent. Không bán token trước. Thưởng cho người
@@ -37,45 +38,46 @@ Tạo DID chỉ để **có danh tính sẵn**, không phải “điểm” tự
 - **DID công khai** (dòng chữ `did:key:...`) → share được.
 - **File khoá bí mật** → như mật khẩu nhà. Mất = mất căn cước. Đưa người khác = họ giả làm bạn.
 
-### Não dùng hôm nay (trước khi có compute Flop)
+### Não hôm nay = tận dụng X Premium+ (trước khi có compute Flop)
 
-Flop chưa mở để mua não GPU bằng `$FLOP`. Trong lúc chờ, agent của bạn vẫn
-cần **một bộ não tạm** để làm việc trên máy (Cursor giúp gõ lệnh / tạo DID hộ).
+Flop chưa mở để mua não GPU bằng `$FLOP`. Repo này **chỉ hướng dẫn một đường**:
 
-| Option | Ai hợp | Ghi chú |
-|---|---|---|
-| **Cursor + Grok API** | Có **X Premium+** (gói Plus/Premium trên X) | Lấy API Grok → gắn vào Cursor → chọn model Grok. Đây là option khuyên dùng trong repo này. |
-| **Cursor + API khác** (GPT…) | Đang dùng ChatGPT / có credit API | Cũng được: tập cho agent làm việc; sau này mới chuyển sang compute Flop khi mạng mở. |
-| **Chỉ trang web** (Cách B) | Không muốn cài Cursor | Chỉ tạo DID, không “nuôi” agent trên máy. |
+**X Premium+ → Grok API → Cursor Agent → tạo DID / nuôi agent trên máy.**
 
-Ý dài hạn: hôm nay dùng Grok/GPT làm não tạm → khi Flop testnet/mainnet mở,
-agent **mua compute `$FLOP`** thay vì (hoặc bớt) phụ thuộc API công ty lớn.
+| Bước | Việc làm (đời thường) |
+|---|---|
+| 1 | Có gói **X Premium+** trên [x.com](https://x.com) (để dùng Grok / lấy API) |
+| 2 | Cài [Cursor](https://cursor.com) — app để AI làm hộ việc trên máy |
+| 3 | Lấy **Grok API key** từ phía X/Grok → dán vào Cursor → chọn model **Grok** |
+| 4 | Mở chat **Agent**, dán prompt ở dưới → Agent tạo DID hộ bạn |
+| 5 | Backup file khoá. Follow [@flop_labs](https://x.com/flop_labs) chờ testnet |
 
-### Cách A — Dùng Cursor + Grok (khuyên dùng nếu bạn không biết code)
+Ý dài hạn: hôm nay dùng **não Grok (qua X Premium+)** → khi Flop mở, agent
+**mua compute `$FLOP`**.
 
-1. Có tài khoản **X Premium+** (để dùng được Grok API theo gói của X).
+### Cách chính — Cursor + Grok (X Premium+)
+
+1. Đăng ký / nâng **X Premium+**.
 2. Cài [Cursor](https://cursor.com) và mở app.
-3. Gắn **Grok API** vào Cursor, rồi chọn model **Grok**.
+3. Gắn **Grok API** vào Cursor, chọn model **Grok**.
 4. Mở chat **Agent**.
-5. Mở file prompt này, **copy cả khối** trong khung code:
-   **[prompts/cursor-tao-did.md](prompts/cursor-tao-did.md)**
-6. Dán vào chat Agent → Enter → làm đúng checklist agent đưa ra.
-7. Khi xong: bạn phải có DID + biết file khoá nằm đâu + đã **backup ra 2 nơi**.
+5. Mở **[prompts/cursor-tao-did.md](prompts/cursor-tao-did.md)** → **copy cả khối**
+   trong khung code → dán vào Agent → Enter.
+6. Làm đúng checklist agent đưa ra.
+7. Khi xong: có DID + biết file khoá nằm đâu + đã **backup ra 2 nơi**.
 
 Không cần hiểu lệnh. Agent làm hộ; bạn chỉ duyệt và cất file.
 
-*(Chi tiết bấm đâu để lấy API key / dán vào Cursor: sẽ bổ sung sau nếu anh em cần.
-Tạm thời nhờ Agent Grok trong Cursor hướng dẫn từng nút — nhớ bảo nó “giải thích
-như học sinh lớp 6”.)*
+Chưa biết bấm đâu lấy API key? Trong Cursor hỏi Grok:
+*“Hướng dẫn mình lấy Grok API từ X Premium+ rồi dán vào Cursor, từng nút,
+như nói với học sinh lớp 6.”*
 
-### Cách B — Web (không cần Cursor)
+### Cách phụ — Chỉ cần DID, không nuôi agent bằng Cursor
 
-👉 **[Mở trang tạo DID](https://kattyfury.github.io/guide_floplabs_build-on-floplabs/)**  
-Chạy trong trình duyệt, khoá không gửi lên server của chúng tôi.
+👉 **[Trang web tạo DID](https://kattyfury.github.io/guide_floplabs_build-on-floplabs/)**  
+(hoặc [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md) nếu tự gõ lệnh).
 
-### Cách C — Tự gõ lệnh (đã biết một chút máy tính)
-
-Xem [guide/technocore-ky-thuat.md](guide/technocore-ky-thuat.md).
+Repo vẫn **ưu tiên Cách chính (X Premium+)**.
 
 ### Sau khi có DID
 
@@ -115,7 +117,7 @@ Khi testnet mở: thưởng miner gắn với sức tính **đã chạy và đư
 
 | Bạn là… | Làm |
 |---|---|
-| Người thường, chưa biết code | **Hướng 1** (Cursor + prompt) |
+| Người thường, chưa biết code | **Hướng 1** (X Premium+ → Cursor + Grok) |
 | Thích viết / làm video / có follower | **Hướng 2** (+ nên có DID hướng 1) |
 | Có card đồ họa mạnh | **Hướng 3** |
 

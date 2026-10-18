@@ -1,16 +1,21 @@
 # Prompt Cursor — Tạo DID Flop Labs (copy hết khối bên dưới)
 
-Dành cho người **chưa biết code**. Bạn chỉ cần mở Cursor, dán đoạn này vào chat Agent, bấm gửi.
+Dành cho người **chưa biết code**. Stack cố định của hướng dẫn này:
 
-**Não tạm hôm nay:** nhiều anh em dùng **X Premium+** → lấy **Grok API** → gắn vào
-Cursor → chọn model Grok. (Flop compute mua bằng `$FLOP` chưa mở; sau này mới
-chuyển. GPT/API khác cũng dùng được nếu bạn đang có.)
+**X Premium+ → Grok API → Cursor → chat Agent → dán prompt.**
 
-Trước khi dán:
-1. Cài [Cursor](https://cursor.com)
-2. Gắn Grok API (từ tài khoản X Premium+) vào Cursor, chọn model **Grok**
-3. Mở folder trống hoặc folder repo này trong Cursor
-4. Mở chat **Agent** → dán prompt bên dưới
+Flop compute (`$FLOP`) chưa mở. Não tạm = **Grok qua X Premium+**.
+
+### Chuẩn bị trước khi dán
+
+1. Có **X Premium+** trên X
+2. Cài [Cursor](https://cursor.com)
+3. Lấy **Grok API key** → gắn vào Cursor → chọn model **Grok**
+4. Mở folder trống hoặc folder repo này
+5. Mở chat **Agent** → dán prompt bên dưới
+
+Chưa biết lấy API? Hỏi luôn trong Cursor:
+*“Hướng dẫn mình lấy Grok API từ X Premium+ rồi dán vào Cursor, từng nút, như nói với học sinh lớp 6.”*
 
 ---
 
@@ -19,12 +24,14 @@ Bạn là trợ lý làm hộ việc trên máy tính. Mình KHÔNG biết code 
 Hãy giải thích mọi thứ như nói với học sinh lớp 6: ngắn, rõ, không jargon.
 Nếu phải dùng từ kỹ thuật thì giải thích bằng 1 câu đời thường ngay sau đó.
 
+Mình đang dùng stack: X Premium+ + Grok API + Cursor. Đừng gợi ý sang ChatGPT / API hãng khác trừ khi mình hỏi.
+
 ## Mình muốn làm gì?
 Tham gia sớm dự án Flop Labs ($FLOP). Hiện tại mình chỉ cần xong BƯỚC 1:
 tạo 1 “thẻ căn cước” cho AI agent tên là DID, rồi cất kỹ file khoá.
 
 ## 3 hướng tham gia (để bạn đừng làm sai)
-1) Tạo DID → sau này khi testnet mở thì dùng làm Agent (mua sức tính)
+1) Tạo DID → sau này khi testnet mở thì dùng làm Agent (mua sức tính trên Flop)
 2) Làm content / KOL (viết bài, làm video) — không cần làm trong bước này
 3) Có card đồ họa GPU → sau này làm Miner — không cần làm trong bước này
 
@@ -47,7 +54,7 @@ CẤM làm hộ mình những việc lỗi thời:
    - Dòng DID công khai (bắt đầu bằng did:key:...) — cái này share được
    - File khoá bí mật nằm ở thư mục secrets/ — cái này KHÔNG share, KHÔNG chụp ảnh đưa ai
    - Copy 1 bản backup sang thư mục Downloads (hoặc hỏi mình muốn để đâu)
-6. Nhắc mình backup ra USB / Google Drive riêng / chỗ an toàn thứ 2.
+6. Nhắc mình backup ra USB / ổ riêng / chỗ an toàn thứ 2.
    Mất file khoá = mất căn cước, không lấy lại được.
 7. Không commit / không push lên GitHub file trong secrets/.
 8. Kết thúc bằng checklist siêu ngắn cho mình:
@@ -66,12 +73,11 @@ CẤM làm hộ mình những việc lỗi thời:
 
 ---
 
-## Bạn (người dùng) làm gì? — 5 bước siêu ngắn
+## Bạn (người dùng) làm gì? — siêu ngắn
 
-1. Cài Cursor → mở app.
-2. Chọn model **Grok** (dùng API Grok của bạn trong Cursor).
-3. Mở chat **Agent**.
-4. Copy **cả khối** trong khung ` ```text ` ở trên → dán vào chat → Enter.
-5. Làm theo checklist agent đưa ra; **cất kỹ file khoá**.
+1. Có **X Premium+**
+2. Cài Cursor → gắn **Grok API** → chọn **Grok**
+3. Mở **Agent** → copy **cả khối** trong khung ` ```text ` ở trên → dán → Enter
+4. Làm checklist → **cất kỹ file khoá**
 
 Xong bước 1. Không cần hiểu code.
