@@ -20,7 +20,7 @@ Luôn ưu tiên [flop.finance](https://flop.finance) và [@flop_labs](https://x.
 | Chạy | **Máy bật là chạy**, chạy ngầm, không cần mở cửa sổ. Tắt máy = nghỉ |
 | Báo cáo | Telegram, mỗi ngày 1 tin. Lỗi thì báo ngay. Có lệnh `/status` `/run` `/pause` `/resume` |
 | Cài | Dán 1 prompt vào Cursor → Cursor làm hộ |
-| Chi phí đo thật | ≈ 8.800 token mỗi bài chấm. Agent tự dừng ở 2,3 triệu token/ngày nên nằm trong phần miễn phí |
+| Chi phí đo thật | ≈ 8.800 token mỗi bài chấm. Agent tự dừng ở 2 triệu token/ngày nên nằm trong phần miễn phí |
 
 👉 **[Hướng dẫn agent](agent/README.md)** · **[Prompt dán vào Cursor](prompts/cursor-cai-agent.md)**
 

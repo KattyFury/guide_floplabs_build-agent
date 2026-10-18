@@ -57,7 +57,7 @@ Não tự quyết: làm việc nào, bỏ việc nào, có cần lên web kiểm
 
 1. Vào [platform.openai.com](https://platform.openai.com/) → nạp **$5 credit**. Dùng hàng trả phí sẽ không bị lỗi như hàng free.
 2. Vào [Data controls → Sharing](https://platform.openai.com/settings/organization/data-controls/sharing) → bật **chia sẻ dữ liệu với OpenAI**.
-   Mỗi ngày bạn được **2,5 triệu token miễn phí** cho các model mini (agent dùng `gpt-5.4-mini`). Agent tự dừng ở 2,3 triệu
+   Mỗi ngày bạn được **2,5 triệu token miễn phí** cho các model mini (agent dùng `gpt-5.4-mini`). Agent tự dừng ở 2 triệu
    token/ngày, nên **thường không đụng tới $5 đã nạp**.
 3. [API keys](https://platform.openai.com/api-keys) → **Create new secret key** → copy.
 
@@ -103,7 +103,7 @@ Bot là **bot riêng**: người nhắn đầu tiên sẽ thành chủ. Muốn �
 |---|---|
 | 1 bài chấm | ≈ 8.800 token |
 | 2 việc nộp + 1 bài chấm | 39.350 token (22.400 được cache) · ≈$0.017 theo giá niêm yết · 5 phút |
-| Ngân sách miễn phí 2,3 triệu token/ngày | ≈ 150–250 việc/ngày (nếu bảng còn đủ việc) |
+| Ngân sách miễn phí 2 triệu token/ngày | ≈ 150–250 việc/ngày (nếu bảng còn đủ việc) |
 
 Log từng việc: `agent/logs/cost.jsonl`. Lỗi: `agent/logs/errors.log`.
 
@@ -111,7 +111,7 @@ Log từng việc: `agent/logs/cost.jsonl`. Lỗi: `agent/logs/errors.log`.
 
 | Núm | Mặc định | Ý nghĩa |
 |---|---|---|
-| `limits.daily_tokens` | 2.300.000 | Trần token/ngày. Giữ dưới 2,5 triệu để nằm trong phần miễn phí |
+| `limits.daily_tokens` | 2.000.000 | Trần token/ngày. Giữ dưới 2,5 triệu để nằm trong phần miễn phí |
 | `limits.daily_usd` | 2.5 | Trần tiền/ngày theo giá niêm yết. Không bật chia sẻ dữ liệu thì hạ xuống |
 | `limits.max_steps_per_job` | 10 | Trần bước cho 1 việc |
 | `limits.pause_between_jobs_sec` | 30 | Nghỉ bao nhiêu giây giữa 2 việc |
