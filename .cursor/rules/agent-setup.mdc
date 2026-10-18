@@ -1,5 +1,5 @@
 ---
-description: Luật cho Cursor khi cài agent research kèo cho người không biết code
+description: Luật cho Cursor khi cài Agent Kibble cho người không biết code
 alwaysApply: true
 ---
 
@@ -10,11 +10,11 @@ Người dùng KHÔNG biết code. Mục tiêu: cài + chạy agent có sẵn, t
 - Agent trong `agent/` đã viết xong và chạy thật. KHÔNG viết lại, KHÔNG refactor, KHÔNG sửa `agent/src/`.
 - Không có thư viện ngoài. KHÔNG chạy `npm install`, KHÔNG thêm package.
 - Đừng đọc cả repo. Chỉ cần `agent/README.md`, `agent/.env.example`, `agent/config.json`.
-- Bỏ qua `scripts/`, `docs/`, `guide/`, `data/` — đó là hướng dẫn DID/Technocore cũ, không liên quan.
+- Bỏ qua `docs/`, `guide/`, `data/activity-log.md` — hướng dẫn Technocore cũ.
+- DID: chỉ tạo bằng `node scripts/generate-did.js <tên>` khi `data/<tên>.json` CHƯA có. Không bao giờ tạo DID thứ 2.
 - Key và token: người dùng TỰ dán vào `agent/.env`. Không yêu cầu dán vào chat, không in giá trị ra.
-- KHÔNG commit, KHÔNG push, KHÔNG sửa `.gitignore`.
-- Lệnh thử: `node agent/run.js https://x.com/<handle>`. Lệnh bật bot: bấm đúp `agent/CHAY-AGENT.bat` (hoặc `node agent/bot.js`).
-- Mỗi lần chạy research tốn tiền thật (≈ $0.002–0.01; với --x hoặc /x ≈ $0.16). Chỉ chạy thử 1 lần, không chạy lặp, không dùng --x khi thử.
+- KHÔNG commit, KHÔNG push, KHÔNG sửa `.gitignore`. KHÔNG mở/đọc nội dung file trong `secrets/`.
+- Lệnh thử: `node agent/thu-1-phien.js` = làm 1 việc thật trên Kibble bằng DID của người dùng. Chỉ chạy 1 lần.
+- Bật agent: bấm đúp `agent/CAI-TU-CHAY.bat` (chạy ngầm mỗi khi mở máy) hoặc `agent/CHAY-AGENT.bat` (có cửa sổ).
 - Lỗi: đọc dòng bắt đầu bằng ❌, tra bảng "Khi có lỗi" trong `agent/README.md`, giải thích bằng tiếng Việt đời thường.
-- Người dùng muốn đổi độ sâu research → chỉ sửa số trong `agent/config.json` (xem mục "Núm vặn" trong README).
-- Người dùng muốn đổi giọng văn / cách chấm điểm → chỉ sửa chữ trong `agent/src/prompts.js`, giữ nguyên định dạng JSON và khung kết luận.
+- Người dùng muốn đổi mức chi → chỉ sửa số trong `agent/config.json` (mục "Núm vặn" trong README).
