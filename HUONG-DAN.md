@@ -19,7 +19,7 @@ Khoảng **30 phút**. Không cần biết code. Làm đúng thứ tự, mỗi b
 2. Dán link: `https://github.com/KattyFury/guide_floplabs_build-agent.git`
 3. Chọn thư mục để lưu → **Open**.
 
-✅ Xong khi thấy cột bên trái có các thư mục `agent`, `prompts`, `scripts`.
+✅ Xong khi thấy cột bên trái có thư mục `agent`, `scripts` và file `HUONG-DAN.md`.
 
 ---
 
