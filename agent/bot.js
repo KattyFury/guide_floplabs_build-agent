@@ -50,10 +50,10 @@ https://x.com/flop_labs
 
 Mình sẽ:
 1) Kiểm tra kèo này cá nhân có làm được không (rẻ, vài giây)
-2) Nếu làm được: đọc web + X, cho 2 bên tranh luận, rồi chấm điểm (khoảng 1 phút)
+2) Nếu làm được: đọc web + X, chấm điểm, chỉ cách tham gia (khoảng 1 phút)
 
 Lệnh:
-/chitiet — xem dữ liệu + cuộc tranh luận của kèo vừa hỏi
+/chitiet — xem dữ liệu agent đã gom cho kèo vừa hỏi
 /moi <link> — research lại từ đầu, bỏ qua kết quả cũ
 /chiphi — hôm nay đã tốn bao nhiêu`;
 

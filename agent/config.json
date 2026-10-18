@@ -1,5 +1,5 @@
 {
-  "_ghi_chu": "NÚM VẶN của agent. Hôm nay để thấp cho vừa gói X. Khi Flop mở: tăng debate_rounds, gather_turns, đổi think sang Flop.",
+  "_ghi_chu": "NÚM VẶN của agent. Hôm nay để thấp cho vừa gói X. Khi Flop mở: tăng max_tool_calls, gather_turns, đổi think sang Flop.",
 
   "brain": {
     "base_url": "https://api.x.ai/v1",
@@ -10,7 +10,7 @@
   },
 
   "think": {
-    "_ghi_chu": "Phần suy nghĩ/tranh luận — chuẩn OpenAI. Sau này đổi base_url/model/api_key_env sang Flop.",
+    "_ghi_chu": "Phần suy nghĩ/viết kết luận — chuẩn OpenAI. Sau này đổi base_url/model/api_key_env sang Flop.",
     "base_url": "https://api.x.ai/v1",
     "api_key_env": "XAI_API_KEY",
     "model": "grok-4.3",
@@ -28,8 +28,7 @@
   "research": {
     "gather_turns": 3,
     "max_tool_calls": 4,
-    "x_days": 90,
-    "debate_rounds": 1
+    "x_days": 90
   },
 
   "cache_days": 7

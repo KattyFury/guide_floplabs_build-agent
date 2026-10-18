@@ -13,25 +13,18 @@ Categories:
 Reply with JSON only, no markdown:
 {"verdict":"ok|b2b|ai_only|web2|unclear","name":"","what":"<=15 words, plain Vietnamese, explain like to a 12-year-old","why":"<=25 words Vietnamese, the evidence","website":"","has_token":false,"ticker":"","chain":"dexscreener chain id e.g. ethereum, base, solana, bsc — only if sure","contract":"official token contract address — only if found on the official site/docs, else empty"}`;
 
-export const GATHER = `You collect evidence about one crypto project for a due-diligence debate. Input: X handle + short screening note.
+export const GATHER = `You collect evidence about one crypto project for a due-diligence verdict. Input: X handle + short screening note.
 Budget: at most 3 web_search calls and 1 x_search call in total. Prefer the official website/docs first. Cover, if available:
 1) funding: amount, round, investors; 2) team: public or anonymous;
 3) token: not launched / launched (ticker, chain), tokenomics, team+investor share, unlocks;
-4) how to participate: steps, cost, deadlines, points/testnet/waitlist;
+4) how to participate: list EVERY path/role an individual can take (e.g. app user, testnet, waitlist, points/quests,
+   node/miner/validator, creator/KOL, developer/builder), each with: requirements, cost, status (open/coming), official link;
 5) traction: users, TVL, partners; 6) community: real vs paid hype, KOL mentions;
 7) red flags: fake claim links, impersonators, security incidents, controversies.
 Write compact English notes, max 350 words, bullet points, each fact with its source URL in brackets.
 Write "unknown" for missing items. Never invent facts.`;
 
-export const BULL = `You argue FOR an individual spending time on this crypto airdrop opportunity.
-Use ONLY the evidence given. Give the 3 strongest reasons, each <=25 words, citing the fact used.
-Then name the single weakest point of the AGAINST case. English, max 150 words.`;
-
-export const BEAR = `You argue AGAINST an individual spending time or money on this crypto airdrop opportunity.
-Use ONLY the evidence given. Give the 3 strongest risks, each <=25 words, citing the fact used.
-Flag any scam signals. Then name the single weakest point of the FOR case. English, max 150 words.`;
-
-export const JUDGE = `You are the judge. Read the evidence (and the FOR/AGAINST arguments if given) and write the final verdict
+export const JUDGE = `You are the judge. Read the evidence, weigh the reasons FOR and the risks AGAINST yourself, and write the final verdict
 for a Vietnamese beginner who knows nothing about crypto. Plain Vietnamese, explain like to a 12-year-old,
 no jargon (if you must use a term, explain it in a few words). Be strict: no hype, no promises.
 Verdict meaning: NÊN LÀM = free/cheap to join now, strong backing. NÊN LÀM NHẸ = joinable but real doubts.
@@ -43,6 +36,10 @@ Use EXACTLY this format, nothing before or after:
 
 Là gì: {1 câu}
 
+🧭 Cách tham gia ({số} hướng)
+1. {tên hướng} — {cần gì, tốn gì, đang mở/sắp mở; ≤20 chữ}
+{liệt kê MỌI hướng có trong evidence, tối đa 5; nếu chưa mở thì ghi khi nào; không bịa hướng không có trong evidence}
+
 👍 Vì sao đáng làm
 • {tối đa 3 ý, mỗi ý ≤15 chữ}
 
@@ -51,4 +48,4 @@ Là gì: {1 câu}
 
 🚩 Cảnh báo: {1 câu, hoặc "Chưa thấy dấu hiệu lừa đảo."}
 
-👉 Làm gì: {1–2 câu, việc cụ thể tiếp theo; nhắc KHÔNG nạp tiền nếu không cần}`;
+👉 Làm gì: {1–2 câu: người mới nên chọn hướng số mấy, bước đầu tiên + link chính thức; nhắc KHÔNG nạp tiền nếu không cần}`;

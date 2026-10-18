@@ -1,4 +1,4 @@
-// Luồng chính: link X → cổng lọc (rẻ) → nếu làm được: gom dữ liệu → tranh luận → trọng tài.
+// Luồng chính: link X → cổng lọc (rẻ) → nếu làm được: gom dữ liệu → trọng tài viết kết luận.
 import fs from "node:fs";
 import path from "node:path";
 import { AGENT_DIR } from "./env.js";
@@ -99,26 +99,14 @@ export async function research(cfg, handle, opts = {}) {
     maxToolCalls: cfg.research.max_tool_calls,
   });
   let facts = `Project: ${gate.name} (@${handle})\n${evidence}`;
-  if (gate.has_token && gate.ticker) facts += `\n${await dexscreener(gate.ticker.replace(/^\$/, ""))}`;
+  const contractOk = /^0x[0-9a-fA-F]{40}$|^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(gate.contract || "");
+  if (gate.has_token && gate.chain && contractOk) facts += `\n${await dexscreener(gate.chain.toLowerCase(), gate.contract)}`;
 
-  // 3) Tranh luận — phần "ăn compute". Mỗi vòng: 1 bên ủng hộ + 1 bên phản đối (chạy song song).
-  const effort = cfg.think.effort;
-  const debate = [];
-  for (let i = 0; i < cfg.research.debate_rounds; i++) {
-    const prev = debate.length ? `\n\nPrevious round:\n${debate.at(-1)}` : "";
-    const [bull, bear] = await Promise.all([
-      think(cfg, `bull${i + 1}`, { system: P.BULL, user: facts + prev, effort }),
-      think(cfg, `bear${i + 1}`, { system: P.BEAR, user: facts + prev, effort }),
-    ]);
-    debate.push(`FOR:\n${bull}\n\nAGAINST:\n${bear}`);
-  }
-
-  // 4) Trọng tài viết kết luận ngắn, kiểu ELI12.
-  const judgeInput = debate.length ? `${facts}\n\n${debate.join("\n\n---\n\n")}` : facts;
-  const report = await think(cfg, "judge", { system: P.JUDGE, user: judgeInput, effort });
+  // 3) Trọng tài viết kết luận ngắn, kiểu ELI12.
+  const report = await think(cfg, "judge", { system: P.JUDGE, user: facts, effort: cfg.think.effort });
 
   const cost = endRun({ verdict: "ok" });
-  const out = { handle, verdict: "ok", report, details: `${facts}\n\n${debate.join("\n\n---\n\n")}`, cost };
+  const out = { handle, verdict: "ok", report, details: facts, cost };
   writeCache(key, out);
   return out;
 }

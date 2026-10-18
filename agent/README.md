@@ -6,21 +6,26 @@ khoảng 1 phút sau nhận lại:
 ```text
 🔍 Flop Labs — 4/10 · CHỜ THÊM
 
-Là gì: Dự án đang thử làm mạng cho máy AI tính toán, chưa chạy thật.
+Là gì: Một dự án chưa có mạng thật, đang chuẩn bị thử nghiệm cho máy tính chạy việc AI.
+
+🧭 Cách tham gia (4 hướng)
+1. Miner — Có GPU thường, nộp đơn miễn phí, sắp mở thử nghiệm
+2. Validator — Nộp đơn miễn phí, sắp mở thử nghiệm
+3. Agent/user — Dùng thử miễn phí khi có thử nghiệm
+4. KOL/builder — Nộp đơn miễn phí qua form chính thức
 
 👍 Vì sao đáng làm
-• Không bán token trước, ai cũng ngang nhau
-• Airdrop dành 24% token cho người thử
-• Vai trò đơn giản chỉ cần ví miễn phí
+• Không ai bán trước, ai cũng bắt đầu ngang nhau
+• Arthur Hayes đứng dẫn dắt
+• Thử nghiệm mở đơn miễn phí
 
 👎 Vì sao cẩn thận
-• Testnet chưa mở, chỉ là bản nháp
-• Chỉ một người công khai dẫn dắt
-• Quy tắc token còn thay đổi được
+• Chưa có mạng thật chạy
+• Nhiều giấy tờ vẫn đang nháp
 
-🚩 Cảnh báo: Có nhiều trang giả mạo bán token giả.
+🚩 Cảnh báo: Nhiều token giả mạo FLOP đang bán ngoài.
 
-👉 Làm gì: Chờ testnet mở rồi thử miễn phí, không nạp tiền gì cả.
+👉 Làm gì: Người mới chờ thử nghiệm mở rồi nộp đơn miner hoặc agent tại flop.finance, KHÔNG nạp tiền gì cả.
 ```
 
 Kèo mà **cá nhân không làm được** thì agent báo ngay trong vài giây, không tốn
@@ -67,14 +72,14 @@ Tự làm không cần Cursor? Xem mục [Tự cài bằng tay](#tự-cài-bằn
 | Trường hợp | Chi phí 1 kèo | Thời gian |
 |---|---|---|
 | Kèo không làm được (dừng ở cổng lọc) | ≈ $0.02 | 3–6 giây |
-| Kèo làm được (research đầy đủ + tranh luận) | ≈ $0.11 | 35–55 giây |
+| Kèo làm được (research đầy đủ) | ≈ $0.11–0.16 | 30–55 giây |
 | Hỏi lại kèo đã research trong 7 ngày | $0 (lấy từ bộ nhớ) | tức thì |
 
 Mỗi câu trả lời có dòng `💸` cho biết đúng lần đó tốn bao nhiêu. Gõ `/chiphi`
 để xem tổng hôm nay. Log đầy đủ ở `agent/logs/cost.jsonl`.
 
 Tiền đi đâu: phần lớn là **tìm kiếm** (đọc web ≈ $0.005/lần, đọc bài X ≈ $0.005/bài)
-và chữ đọc từ web. Phần "suy nghĩ + tranh luận" hiện chỉ ≈ $0.01.
+và chữ đọc từ web. Phần viết kết luận chỉ ≈ $0.005.
 
 ---
 
@@ -90,12 +95,11 @@ Link X
 🔎 Gom dữ liệu: đọc web + X (vốn, team, token, cách tham gia, cờ đỏ)
   │      └─ đã có token + biết contract → lấy giá/thanh khoản từ DexScreener (miễn phí)
   ▼
-⚔️ Tranh luận: 1 agent tìm lý do NÊN làm, 1 agent tìm lý do NÊN NÉ (chạy song song)
-  ▼
-⚖️ Trọng tài: chấm điểm, viết kết luận ngắn kiểu ELI12
+⚖️ Trọng tài: cân lý do nên làm / nên né, chấm điểm, liệt kê các hướng tham gia,
+   viết kết luận ngắn kiểu ELI12
 ```
 
-Gõ `/chitiet` trên Telegram để xem toàn bộ dữ liệu + cuộc tranh luận của kèo vừa hỏi.
+Gõ `/chitiet` trên Telegram để xem toàn bộ dữ liệu agent đã gom cho kèo vừa hỏi.
 
 ---
 
@@ -105,12 +109,12 @@ Mọi thứ chỉnh trong [`config.json`](config.json), không cần sửa code:
 
 | Núm | Hôm nay | Khi có compute Flop |
 |---|---|---|
-| `research.debate_rounds` — số vòng tranh luận | 1 | 3–5 |
 | `research.max_tool_calls` — số lần tìm web/X | 4 | 10+ |
+| `research.gather_turns` — số vòng đi tìm | 3 | 5+ |
 | `think.model` / `think.base_url` — não suy nghĩ | `grok-4.3` trên xAI | model mở trên Flop |
 | `cache_days` — nhớ kết quả bao lâu | 7 | 1–3 |
 
-Phần **suy nghĩ/tranh luận** dùng chuẩn OpenAI, nên khi Flop mở chỉ cần đổi
+Phần **viết kết luận** dùng chuẩn OpenAI, nên khi Flop mở chỉ cần đổi
 `think.base_url` + `think.model` + `think.api_key_env`. Phần **gom dữ liệu**
 đang dùng tool tìm X/web có sẵn của Grok — khi chuyển hẳn khỏi Grok thì phải thay
 bằng tool riêng.
@@ -123,7 +127,7 @@ bằng tool riêng.
 |---|---|
 | `https://x.com/tenduan` hoặc `@tenduan` | Research kèo đó |
 | `/moi https://x.com/tenduan` | Research lại từ đầu, bỏ qua kết quả cũ |
-| `/chitiet` | Xem dữ liệu + tranh luận của kèo vừa hỏi |
+| `/chitiet` | Xem dữ liệu agent đã gom cho kèo vừa hỏi |
 | `/chiphi` | Hôm nay đã tốn bao nhiêu |
 
 Bot là **bot riêng**: người đầu tiên nhắn tin sẽ thành chủ, người khác nhắn vào
