@@ -36,7 +36,7 @@ export function makeTelegram(token) {
   return { tg };
 }
 
-export const FOOTER = "\n\n⌨️ /status · /run · /pause · /resume · /help";
+export const FOOTER = "\n\n⌨️ /status · /run · /pause · /resume · /help · nhắn câu hỏi = đăng việc";
 
 export const COMMANDS = [
   { command: "status", description: "Điểm, hạng, hôm nay đã làm gì" },

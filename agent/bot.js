@@ -2,10 +2,13 @@
 // báo kết quả qua Telegram, trả lời lệnh ngay. Dừng chương trình (tắt máy) = agent nghỉ.
 //
 // Lệnh Telegram: /status · /run · /pause · /resume · /help
+// Nhắn tin thường (câu hỏi / ý tưởng) → soạn thành 1 việc, bấm ✅ Đăng thì mới đăng lên Kibble.
+import crypto from "node:crypto";
 import { loadEnv, loadConfig } from "./src/env.js";
 import { loadDid } from "./src/did.js";
 import { runSession, today } from "./src/agent.js";
 import * as T from "./src/telegram.js";
+import { draftJob, postJob, preview } from "./src/postjob.js";
 
 loadEnv();
 let tg;
@@ -50,7 +53,47 @@ Mỗi ngày mình dừng khi dùng hết phần token miễn phí.
 /run — làm ngay 1 việc
 /pause — tạm dừng
 /resume — chạy lại
-Gõ / để mở menu lệnh bất cứ lúc nào.`;
+Gõ / để mở menu lệnh bất cứ lúc nào.
+
+📮 Muốn nhờ cả mạng làm giúp? Nhắn thẳng câu hỏi (tiếng Việt cũng được). Mình soạn lại thành 1 việc chuẩn tiếng Anh, bạn bấm ✅ Đăng thì mới đăng lên Kibble bằng DID của bạn (+2 điểm/việc). Đăng ít mà chất — đăng hàng loạt việc na ná nhau bị coi là cày điểm.`;
+
+// Nháp việc chờ chủ bấm nút (mất khi bot khởi động lại).
+const drafts = new Map();
+
+async function onIdea(msg) {
+  await send("✍️ Đang soạn thành 1 việc…");
+  let job;
+  try {
+    job = await draftJob(cfg, msg.text);
+  } catch (e) {
+    return send(`❌ Không soạn được: ${e.message}`);
+  }
+  if (!job.ok) return send(`🤔 Chưa đăng được: ${job.reason_vi}`);
+  const key = crypto.randomBytes(4).toString("hex");
+  drafts.set(key, job);
+  await tg("sendMessage", {
+    chat_id: T.state().owner,
+    text: `${preview(job)}\n\nChưa ổn thì bấm Huỷ rồi nhắn lại rõ hơn.`,
+    disable_web_page_preview: true,
+    reply_markup: { inline_keyboard: [[{ text: "✅ Đăng", callback_data: `post:${key}` }, { text: "❌ Huỷ", callback_data: `drop:${key}` }]] },
+  });
+}
+
+async function onButton(q) {
+  await tg("answerCallbackQuery", { callback_query_id: q.id }).catch(() => {});
+  if (q.from.id !== T.state().owner) return;
+  const [act, key] = String(q.data).split(":");
+  const job = drafts.get(key);
+  drafts.delete(key);
+  // Bỏ nút để không bấm Đăng 2 lần.
+  await tg("editMessageReplyMarkup", { chat_id: q.message.chat.id, message_id: q.message.message_id, reply_markup: { inline_keyboard: [] } }).catch(() => {});
+  if (!job) return send("⌛ Nháp này không còn (đã xử lý hoặc bot vừa khởi động lại). Nhắn lại câu hỏi nhé.");
+  if (act !== "post") return send("🗑️ Đã huỷ, không đăng.");
+  const r = await postJob(id, job);
+  console.log(`  📮 đăng việc ${r.job_id} → ${r.ok ? "ok" : r.error || r.http}`);
+  if (!r.ok) return send(`❌ Kibble không nhận: ${r.error || `HTTP ${r.http}`}`);
+  await send(`📮 Đã đăng việc ${r.job_id}\n${job.title}\n\nAgent của bạn sẽ không tự nhận hay tự chấm việc này (luật Kibble). Xem trên https://kibble.world`);
+}
 
 async function session(trigger) {
   if (running) {
@@ -106,7 +149,8 @@ async function onMessage(msg) {
     await send("▶️ Chạy lại.");
     return wake?.();
   }
-  return send(HELP);
+  if (text.startsWith("/") || !msg.text.trim()) return send(HELP);
+  return onIdea(msg);
 }
 
 async function main() {
@@ -143,7 +187,7 @@ async function main() {
   for (;;) {
     let updates = [];
     try {
-      updates = await tg("getUpdates", { offset, timeout: 50, allowed_updates: ["message"] });
+      updates = await tg("getUpdates", { offset, timeout: 50, allowed_updates: ["message", "callback_query"] });
     } catch (e) {
       console.log(`⚠️ Mất kết nối Telegram (${e.message}), thử lại sau 10 giây…`);
       await new Promise((r) => setTimeout(r, 10_000));
@@ -152,6 +196,7 @@ async function main() {
     for (const u of updates) {
       offset = u.update_id + 1;
       if (u.message?.text) onMessage(u.message).catch((e) => console.log(`  ✗ ${e.message}`));
+      if (u.callback_query) onButton(u.callback_query).catch((e) => console.log(`  ✗ ${e.message}`));
     }
   }
 }

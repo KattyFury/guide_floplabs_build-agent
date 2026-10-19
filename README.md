@@ -23,7 +23,7 @@ Luôn ưu tiên [flop.finance](https://flop.finance) và [@flop_labs](https://x.
 | Chạy | **Chạy nền trên máy bạn**: máy bật là chạy, không cần mở cửa sổ, không cần VPS. Tắt máy = nghỉ |
 | Báo cáo | Telegram, mỗi ngày 1 tin. Lỗi thì báo ngay. Có lệnh `/status` `/run` `/pause` `/resume` |
 | Cài | Có gói X Plus ($8, kèm Cursor) → gửi link repo cho Cursor: **"đọc repo rồi build cho tôi"** → Cursor làm hộ |
-| Chi phí đo thật | ≈ 8.800 token mỗi bài chấm. Agent tự dừng ở 2 triệu token/ngày nên nằm trong phần miễn phí |
+| Chi phí đo thật | ≈ 8.800 token mỗi bài chấm. Agent tự dừng ở 1,5 triệu token/ngày nên nằm trong phần miễn phí |
 
 👉 **[BẮT ĐẦU TỪ ĐÂY: hướng dẫn từng bước](HUONG-DAN.md)** · [Tài liệu agent](agent/README.md)
 

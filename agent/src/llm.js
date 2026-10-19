@@ -58,6 +58,22 @@ export async function step(cfg, stage, { messages, tools, convId }) {
   if (b.reasoning_effort) body.reasoning_effort = b.reasoning_effort;
   if (convId) body.prompt_cache_key = convId;
   const data = await post(`${b.base_url}/chat/completions`, process.env[b.api_key_env], body);
+  const { usage, cost } = meter(b, data);
+  recordCall(stage, data.model, usage, cost, {});
+  return { message: data.choices?.[0]?.message || { role: "assistant", content: "" }, cost, tokens: usage.input + usage.output };
+}
+
+// Hỏi não 1 lần, không tool (ví dụ: soạn việc để đăng). Người gọi tự ghi log token.
+export async function ask(cfg, { system, user, json = false }) {
+  const b = cfg.brain;
+  const body = { model: b.model, messages: [{ role: "system", content: system }, { role: "user", content: user }] };
+  if (b.reasoning_effort) body.reasoning_effort = b.reasoning_effort;
+  if (json) body.response_format = { type: "json_object" };
+  const data = await post(`${b.base_url}/chat/completions`, process.env[b.api_key_env], body);
+  return { text: data.choices?.[0]?.message?.content || "", model: data.model, ...meter(b, data) };
+}
+
+function meter(b, data) {
   const u = data.usage || {};
   const usage = {
     input: u.prompt_tokens || 0,
@@ -68,6 +84,5 @@ export async function step(cfg, stage, { messages, tools, convId }) {
   // Giá niêm yết (khi vượt phần token miễn phí mỗi ngày mới bị tính tiền thật).
   const p = b.price;
   const cost = ((usage.input - usage.cached) * p.input + usage.cached * p.cached + usage.output * p.output) / 1e6;
-  recordCall(stage, data.model, usage, cost, {});
-  return { message: data.choices?.[0]?.message || { role: "assistant", content: "" }, cost, tokens: usage.input + usage.output };
+  return { usage, cost };
 }
