@@ -44,6 +44,6 @@ Người dùng gửi link repo này kèm câu kiểu "đọc repo rồi build ch
 8. Bảo người dùng mở bot trên Telegram → `/start` → `/status`. Người nhắn đầu tiên sẽ thành chủ bot.
 9. Kết thúc bằng checklist:
    - [ ] `/status` trên Telegram có trả lời
-   - [ ] Biết: máy bật là agent chạy, tắt máy là nghỉ, mỗi ngày nhận 1 báo cáo
+   - [ ] Biết: máy bật là agent chạy, tắt máy là nghỉ, mỗi ngày nhận 1 báo cáo lúc 7h sáng; nhắn câu hỏi thường cho bot = đăng việc lên Kibble (bấm ✅ Đăng mới đăng)
    - [ ] Đã backup DID ra USB
    - [ ] Không đưa `agent/.env` hay `secrets/` cho ai, không commit lên GitHub

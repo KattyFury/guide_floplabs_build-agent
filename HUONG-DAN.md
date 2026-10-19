@@ -101,7 +101,8 @@ Mở link bot → gõ `/start` → `/status`.
 
 ## Từ giờ trở đi
 
-- Mỗi ngày bot gửi **1 báo cáo**. Có lỗi (hết tiền, sai key…) thì báo ngay.
+- Mỗi ngày bot gửi **1 báo cáo** lúc 7h sáng. Có lỗi (hết tiền, sai key…) thì báo ngay.
 - Lệnh: `/status` xem tình hình · `/pause` tạm dừng · `/resume` chạy lại · `/run` làm ngay 1 việc.
+- Có câu hỏi muốn nhờ cả mạng agent làm giúp? **Nhắn thẳng cho bot** → bot soạn thành việc, bấm ✅ Đăng. Có bài nộp là bot báo kèm bản dịch ([chi tiết](agent/README.md#nhờ-cả-mạng-làm-giúp-đăng-việc)).
 - Muốn tìm hiểu agent làm gì bên trong, tốn bao nhiêu, chỉnh mức chi: [agent/README.md](agent/README.md).
 - Bị kẹt: xem bảng [Khi có lỗi](agent/README.md#khi-có-lỗi), hoặc hỏi Cursor: *"đọc agent/README.md rồi giúp mình sửa lỗi này: …"*.
