@@ -64,13 +64,9 @@ export async function postJob(id, job) {
   const job_id = "k" + crypto.randomBytes(5).toString("hex");
   const r = await kibble.post(id, `JOB v1 | ${job_id} | ${job.category} | ${job.title} | ${job.body}`);
   if (r.ok) {
-    let list = [];
-    try {
-      list = JSON.parse(fs.readFileSync(POSTED_FILE, "utf8"));
-    } catch {}
+    const list = loadPosted();
     list.push({ job_id, at: new Date().toISOString(), category: job.category, title: job.title, body: job.body });
-    fs.mkdirSync(path.dirname(POSTED_FILE), { recursive: true });
-    fs.writeFileSync(POSTED_FILE, JSON.stringify(list, null, 1));
+    savePosted(list);
   }
   return { ...r, job_id };
 }
@@ -79,9 +75,134 @@ export function preview(job) {
   return [`📝 Nháp việc (${job.category})`, "", job.title, "", job.body, "", `➕ ${job.added_vi}`].join("\n");
 }
 
-// Ghi token + $ của lần soạn (không lẫn vào log của vòng làm việc đang chạy).
-function logCost(r) {
-  const line = { time: new Date().toISOString(), label: "draft-job", cost_usd: +r.cost.toFixed(5), calls: [{ stage: "draft", model: r.model, ...r.usage, cost: +r.cost.toFixed(6) }] };
+function loadPosted() {
+  try {
+    return JSON.parse(fs.readFileSync(POSTED_FILE, "utf8"));
+  } catch {
+    return [];
+  }
+}
+function savePosted(list) {
+  fs.mkdirSync(path.dirname(POSTED_FILE), { recursive: true });
+  fs.writeFileSync(POSTED_FILE, JSON.stringify(list, null, 1));
+}
+
+// ---------- Theo dõi bài nộp cho việc mình đăng ----------
+// /api/board chỉ trả ~80 việc mới nhất (cả bảng >200k việc) → việc mình đăng trôi khỏi đó sau vài phút.
+// Nên đọc thẳng room `kibble` trên Technocore (mọi dòng CLAIM/RESULT nằm ở đây), từ chỗ đã đọc lần trước.
+// Room chạy ~230 tin/phút, chỉ giữ ~80 phút, và `since=` trả về 200 tin MỚI NHẤT (không phân trang tiếp được)
+// → phải đọc liên tục từng ít một (long-poll `wait=10`, nghỉ 2 giây), chỉ khi còn việc đang chờ bài nộp.
+const ROOM = "https://technocore.chat/r/kibble";
+const hash16 = (s) => crypto.createHash("sha256").update(s, "utf8").digest("hex").slice(0, 16); // = result_hash của Kibble
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const waiting = (list) => list.filter((p) => !p.verdict && Date.now() - Date.parse(p.at) < 14 * 86400_000);
+
+async function roomPage(since) {
+  const q = since ? `&since=${since}&wait=10` : "";
+  const r = await fetch(`${ROOM}?format=json&limit=200${q}`, { signal: AbortSignal.timeout(60_000) });
+  if (!r.ok) throw new Error(`Technocore ${r.status} khi đọc room kibble`);
+  return r.json();
+}
+
+// Chạy mãi (bot.js gọi 1 lần). Bài nộp tìm thấy ghi ngay vào posted.json (p.answer) → gửi Telegram lỗi cũng không mất.
+export async function watchRoom(log = console.log) {
+  let seq = 0;
+  for (;;) {
+    try {
+      if (!waiting(loadPosted()).length) {
+        seq = 0; // không có việc chờ → nghỉ, lần sau đọc lại từ hiện tại
+        await sleep(60_000);
+        continue;
+      }
+      const page = await roomPage(seq);
+      const msgs = page.messages || [];
+      if (seq && msgs.length && msgs[0].seq > seq + 1) log(`  ⚠️ room kibble: sót ${msgs[0].seq - seq - 1} tin (đọc không kịp)`);
+      const list = loadPosted();
+      const open = new Map(waiting(list).map((p) => [p.job_id, p]));
+      let found = false;
+      for (const m of msgs) {
+        seq = Math.max(seq, m.seq);
+        const f = String(m.text).split(" | ");
+        const p = open.get(f[1]);
+        if (!p) continue;
+        if (f[0] === "CLAIM v1" && !p.claimant) (p.claimant = m.from), (found = true);
+        // Kibble chỉ tính RESULT của người CLAIM trước. Chưa thấy CLAIM (đọc sót) thì nhận luôn.
+        if (/^(RESULT|DELIVER) v1$/.test(f[0]) && (!p.claimant || p.claimant === m.from)) {
+          const result = f.slice(2).join(" | ").trim();
+          p.answer = { result, result_hash: hash16(result), worker: m.from, at: m.ts };
+          found = true;
+          log(`  📬 room: bài nộp cho việc ${p.job_id}`);
+        }
+      }
+      if (found) savePosted(list);
+      await sleep(2000);
+    } catch (e) {
+      log(`  ⚠️ đọc room kibble: ${e.message}`);
+      await sleep(30_000);
+    }
+  }
+}
+
+// Việc mình đăng (14 ngày gần nhất, chưa chấm) có bài nộp chưa báo → trả về để báo Telegram.
+// Chưa đánh dấu "đã báo" ở đây: gửi Telegram được thì bot.js mới gọi markSeen.
+export async function newAnswers() {
+  if (!waiting(loadPosted()).length) return [];
+  // Dự phòng: việc còn nằm trên /api/board thì lấy bài nộp ở đó (có sẵn result_hash).
+  let jobs = [];
+  try {
+    ({ jobs } = await kibble.board());
+  } catch {}
+  const out = [];
+  for (const p of loadPosted()) {
+    if (p.verdict) continue;
+    const j = jobs.find((x) => x.job_id === p.job_id);
+    const a = j?.result ? { result: j.result, result_hash: j.result_hash, worker: j.worker_nick || j.worker_did } : p.answer;
+    if (a && a.result_hash !== p.seen_hash) out.push({ job_id: p.job_id, title: p.title, ...a, worker: a.worker || "?" });
+  }
+  return out;
+}
+
+export function markSeen(job_id, result_hash) {
+  const list = loadPosted();
+  const p = list.find((x) => x.job_id === job_id);
+  if (p) (p.seen_hash = result_hash), savePosted(list);
+}
+
+// Dịch bài nộp sang tiếng Việt cho chủ đọc (1 lần gọi não, ≈1k token).
+export async function translateVi(cfg, text) {
+  const r = await ask(cfg, {
+    system: "Translate the user's text to natural Vietnamese. Keep every number, unit, name and URL exactly. Output only the translation.",
+    user: text.slice(0, 2000),
+  });
+  logCost(r, "answer-vi");
+  return r.text.trim();
+}
+
+// Người đăng chấm bài nộp: useful = ACCEPT (+1 cho mình, bài được công nhận) · not = không đạt.
+// Kibble không có dòng ACCEPT riêng: người đăng ký ATTEST như mọi người, board tự đánh dấu là phiếu của người đăng.
+export async function judgeAnswer(id, job_id, useful) {
+  const list = loadPosted();
+  const p = list.find((x) => x.job_id === job_id);
+  if (!p) return { ok: false, error: "không thấy việc này trong danh sách đã đăng" };
+  if (p.verdict) return { ok: false, error: `việc này đã chấm rồi (${p.verdict})` };
+  if (!p.seen_hash) return { ok: false, error: "chưa có bài nộp" };
+  const t = p.title.slice(0, 90);
+  const why = useful
+    ? `Poster accepts: the result for "${t}" answers what was asked and meets the Done-when conditions.`
+    : `Poster rejects: the result for "${t}" does not meet the Done-when conditions of the job.`;
+  const verdict = useful ? "useful" : "not";
+  const r = await kibble.post(id, `ATTEST v1 | ${job_id} | ${verdict} | rh:${p.seen_hash} | ${why}`);
+  if (r.ok) {
+    p.verdict = verdict;
+    p.judged_at = new Date().toISOString();
+    savePosted(list);
+  }
+  return r;
+}
+
+// Ghi token + $ của lần gọi não lẻ (không lẫn vào log của vòng làm việc đang chạy).
+function logCost(r, label = "draft-job") {
+  const line = { time: new Date().toISOString(), label, cost_usd: +r.cost.toFixed(5), calls: [{ stage: label, model: r.model, ...r.usage, cost: +r.cost.toFixed(6) }] };
   fs.mkdirSync(path.join(AGENT_DIR, "logs"), { recursive: true });
   fs.appendFileSync(path.join(AGENT_DIR, "logs", "cost.jsonl"), JSON.stringify(line) + "\n");
 }

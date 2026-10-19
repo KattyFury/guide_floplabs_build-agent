@@ -8,7 +8,7 @@ import { loadEnv, loadConfig } from "./src/env.js";
 import { loadDid } from "./src/did.js";
 import { runSession, today } from "./src/agent.js";
 import * as T from "./src/telegram.js";
-import { draftJob, postJob, preview } from "./src/postjob.js";
+import { draftJob, postJob, preview, newAnswers, markSeen, translateVi, judgeAnswer, watchRoom } from "./src/postjob.js";
 
 loadEnv();
 let tg;
@@ -55,7 +55,7 @@ Mỗi ngày mình dừng khi dùng hết phần token miễn phí.
 /resume — chạy lại
 Gõ / để mở menu lệnh bất cứ lúc nào.
 
-📮 Muốn nhờ cả mạng làm giúp? Nhắn thẳng câu hỏi (tiếng Việt cũng được). Mình soạn lại thành 1 việc chuẩn tiếng Anh, bạn bấm ✅ Đăng thì mới đăng lên Kibble bằng DID của bạn (+2 điểm/việc). Đăng ít mà chất — đăng hàng loạt việc na ná nhau bị coi là cày điểm.`;
+📮 Muốn nhờ cả mạng làm giúp? Nhắn thẳng câu hỏi (tiếng Việt cũng được). Mình soạn lại thành 1 việc chuẩn tiếng Anh, bạn bấm ✅ Đăng thì mới đăng lên Kibble bằng DID của bạn (+2 điểm/việc). Có agent nộp bài là mình báo ngay kèm bản dịch, bạn bấm 👍 Đạt (ACCEPT, +1) hoặc 👎 Không đạt. Đăng ít mà chất — đăng hàng loạt việc na ná nhau bị coi là cày điểm.`;
 
 // Nháp việc chờ chủ bấm nút (mất khi bot khởi động lại).
 const drafts = new Map();
@@ -79,14 +79,51 @@ async function onIdea(msg) {
   });
 }
 
+// Cứ 2 phút xem việc mình đăng có bài nộp mới chưa → báo Telegram (kèm bản dịch) + nút chấm.
+let checking = false;
+async function checkAnswers() {
+  if (checking) return;
+  checking = true;
+  try {
+    for (const a of await newAnswers()) {
+      let vi = "";
+      try {
+        vi = await translateVi(cfg, a.result);
+      } catch (e) {
+        vi = `(không dịch được: ${e.message})`;
+      }
+      const ok = await tg("sendMessage", {
+        chat_id: T.state().owner,
+        text: [`📬 Việc bạn đăng đã có bài nộp`, a.title, "", `🇻🇳 ${vi}`, "", `📄 Bản gốc (${a.worker.slice(0, 24)}):`, a.result, "", `Mã việc: ${a.job_id}`]
+          .join("\n")
+          .slice(0, 4000),
+        disable_web_page_preview: true,
+        reply_markup: { inline_keyboard: [[{ text: "👍 Đạt (ACCEPT)", callback_data: `acc:${a.job_id}` }, { text: "👎 Không đạt", callback_data: `rej:${a.job_id}` }]] },
+      }).then(() => true, (e) => (console.log(`⚠️ ${e.message}`), false));
+      if (ok) markSeen(a.job_id, a.result_hash);
+      console.log(`  📬 bài nộp cho việc ${a.job_id} → ${ok ? "đã báo" : "báo lỗi, 2 phút sau thử lại"}`);
+    }
+  } catch (e) {
+    console.log(`  ✗ xem bài nộp: ${e.message}`);
+  } finally {
+    checking = false;
+  }
+}
+
 async function onButton(q) {
   await tg("answerCallbackQuery", { callback_query_id: q.id }).catch(() => {});
   if (q.from.id !== T.state().owner) return;
   const [act, key] = String(q.data).split(":");
+  // Bỏ nút để không bấm 2 lần.
+  await tg("editMessageReplyMarkup", { chat_id: q.message.chat.id, message_id: q.message.message_id, reply_markup: { inline_keyboard: [] } }).catch(() => {});
+  if (act === "acc" || act === "rej") {
+    const r = await judgeAnswer(id, key, act === "acc");
+    console.log(`  🧾 chấm bài nộp việc ${key} → ${act} ${r.ok ? "ok" : r.error || r.http}`);
+    if (!r.ok) return send(`❌ Chưa chấm được: ${r.error || `HTTP ${r.http}`}`);
+    return send(act === "acc" ? `👍 Đã ACCEPT bài nộp việc ${key} (+1 điểm cho bạn).` : `👎 Đã chấm không đạt bài nộp việc ${key}.`);
+  }
   const job = drafts.get(key);
   drafts.delete(key);
-  // Bỏ nút để không bấm Đăng 2 lần.
-  await tg("editMessageReplyMarkup", { chat_id: q.message.chat.id, message_id: q.message.message_id, reply_markup: { inline_keyboard: [] } }).catch(() => {});
   if (!job) return send("⌛ Nháp này không còn (đã xử lý hoặc bot vừa khởi động lại). Nhắn lại câu hỏi nhé.");
   if (act !== "post") return send("🗑️ Đã huỷ, không đăng.");
   const r = await postJob(id, job);
@@ -162,6 +199,8 @@ async function main() {
   console.log("   Dừng chương trình này (tắt máy / đóng cửa sổ / dừng container) = agent nghỉ.\n");
 
   setInterval(reportYesterday, 60_000);
+  setInterval(checkAnswers, 2 * 60_000);
+  watchRoom(); // đọc room kibble liên tục để bắt bài nộp cho việc mình đăng
 
   // Vòng chạy liên tục: mỗi vòng = 1 việc. Xong việc → nghỉ 30 giây rồi làm việc tiếp; hết việc → nghỉ 15 phút; hết token → nghỉ 30 phút.
   (async () => {
