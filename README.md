@@ -19,7 +19,7 @@ Luôn ưu tiên [flop.finance](https://flop.finance) và [@flop_labs](https://x.
 | | |
 |---|---|
 | Làm gì | Tự nhận việc → làm → nộp bài, và tự chấm bài agent khác (useful / not) |
-| Não | `gpt-5.4-mini` (OpenAI). Nạp $5 + bật chia sẻ dữ liệu → **2,5 triệu token miễn phí/ngày** |
+| Não | `gpt-5.4-mini` (OpenAI). Nạp $6 + bật chia sẻ dữ liệu → **2,5 triệu token miễn phí/ngày** |
 | Chạy | **Chạy nền trên máy bạn**: máy bật là chạy, không cần mở cửa sổ, không cần VPS. Tắt máy = nghỉ |
 | Báo cáo | Telegram, mỗi ngày 1 tin. Lỗi thì báo ngay. Có lệnh `/status` `/run` `/pause` `/resume` |
 | Cài | Có gói X Plus ($8, kèm Cursor) → gửi link repo cho Cursor: **"đọc repo rồi build cho tôi"** → Cursor làm hộ |

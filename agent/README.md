@@ -49,7 +49,7 @@ Não tự quyết: làm việc nào, bỏ việc nào, có cần lên web kiểm
 
 | Thứ cần | Ghi chú |
 |---|---|
-| **API OpenAI** | Nạp $5, rồi bật chia sẻ dữ liệu để được token miễn phí mỗi ngày (mục dưới) |
+| **API OpenAI** | Nạp $6, rồi bật chia sẻ dữ liệu để được token miễn phí mỗi ngày (mục dưới) |
 | **Node.js** bản LTS | Chương trình để chạy agent ([nodejs.org](https://nodejs.org)) |
 | **Telegram** | Agent báo cáo + bạn điều khiển |
 | **DID** | Căn cước của agent. Repo có lệnh tạo sẵn |
@@ -57,10 +57,10 @@ Não tự quyết: làm việc nào, bỏ việc nào, có cần lên web kiểm
 
 ### Lấy API OpenAI mà vẫn gần như miễn phí
 
-1. Vào [platform.openai.com](https://platform.openai.com/) → nạp **$5 credit**. Dùng hàng trả phí sẽ không bị lỗi như hàng free.
+1. Vào [platform.openai.com](https://platform.openai.com/) → nạp **$6 credit**. Dùng hàng trả phí sẽ không bị lỗi như hàng free. Nạp $6 chứ không phải $5: số dư từ $5 trở lên mới được hạng tài khoản tốt, nạp vừa đúng $5 thì chỉ cần trừ vài cent là rớt xuống dưới.
 2. Vào [Data controls → Sharing](https://platform.openai.com/settings/organization/data-controls/sharing) → bật **chia sẻ dữ liệu với OpenAI**.
    Mỗi ngày bạn được **2,5 triệu token miễn phí** cho các model mini (agent dùng `gpt-5.4-mini`). Agent tự dừng ở 1,5 triệu
-   token/ngày, nên **thường không đụng tới $5 đã nạp**.
+   token/ngày, nên **thường không đụng tới $6 đã nạp**.
 3. [API keys](https://platform.openai.com/api-keys) → **Create new secret key** → copy.
 
 👉 Bật chia sẻ nghĩa là OpenAI được dùng nội dung agent gửi để huấn luyện model. Agent chỉ đọc

@@ -13,7 +13,7 @@ Khoảng **30 phút**. Không cần biết code. Bạn chỉ cần gửi link re
 - Tải tại [cursor.com](https://cursor.com) → cài → đăng nhập bằng tài khoản vừa mua gói.
 - Trong khung chat của Cursor, chọn model **Grok**. Gói Plus chỉ kèm model Grok; model hãng khác bị tính tiền riêng.
 
-**3. Thêm:** Telegram, tài khoản [OpenAI Platform](https://platform.openai.com/) + **$5** để nạp (bước 2).
+**3. Thêm:** Telegram, tài khoản [OpenAI Platform](https://platform.openai.com/) + **$6** để nạp (bước 2).
 
 ✅ Xong khi mở được Cursor và thấy model Grok trong khung chat.
 
@@ -38,9 +38,9 @@ Bước 2–6 dưới đây là những gì Cursor sẽ nhờ bạn làm, đọc
 
 ## Bước 2 — Lấy key OpenAI (gần như miễn phí)
 
-1. [platform.openai.com](https://platform.openai.com/) → **Billing** → nạp **$5**.
+1. [platform.openai.com](https://platform.openai.com/) → **Billing** → nạp **$6**. Nạp $6 chứ không phải $5: số dư từ $5 trở lên mới được hạng tài khoản tốt, nạp vừa đúng $5 thì chỉ cần trừ vài cent là rớt xuống dưới.
 2. [Data controls → Sharing](https://platform.openai.com/settings/organization/data-controls/sharing) → bật **chia sẻ dữ liệu với OpenAI**
-   → mỗi ngày được **2,5 triệu token miễn phí**. Agent tự dừng ở 1,5 triệu, nên thường không đụng tới $5.
+   → mỗi ngày được **2,5 triệu token miễn phí**. Agent tự dừng ở 1,5 triệu, nên thường không đụng tới $6.
 3. [API keys](https://platform.openai.com/api-keys) → **Create new secret key** → copy, dán tạm vào Notepad.
 
 ✅ Xong khi có 1 chuỗi bắt đầu bằng `sk-`.
