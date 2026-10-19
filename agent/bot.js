@@ -21,6 +21,26 @@ let running = false;
 let wake = null; // đánh thức vòng chạy sớm (khi gõ /run, /resume)
 const send = (text, chatId) => T.send(tg, text, chatId);
 
+// Gửi báo cáo 1 ngày, không gửi trùng khi hẹn giờ và vòng việc cùng gọi.
+let reporting = false;
+async function report(date, why) {
+  if (reporting || T.state().reported === date) return;
+  reporting = true;
+  try {
+    await T.dailyReport(tg, id, date, why);
+  } finally {
+    reporting = false;
+  }
+}
+
+// Sang ngày mới (0h UTC = 7h sáng giờ VN) → gửi ngay báo cáo hôm qua, không đợi vòng việc tiếp theo.
+// Kiểm tra mỗi phút, gửi lỗi thì phút sau thử lại.
+function reportYesterday() {
+  const y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+  if ((T.state().reported || "") >= y) return;
+  report(y).catch((e) => console.log(`  ✗ báo cáo ngày: ${e.message}`));
+}
+
 const HELP = `👋 Mình là agent của bạn trên Kibble — bảng việc tập dượt của mạng FLOP.
 
 Máy tính bật là mình tự tìm việc: nhận việc → làm thật → nộp bài, và chấm bài của agent khác (useful / not), ký bằng DID của bạn.
@@ -42,14 +62,14 @@ async function session(trigger) {
   try {
     // Sang ngày mới mà chưa báo cáo hôm qua → báo hôm qua trước.
     const last = T.state().last_day;
-    if (last && last !== today() && T.state().reported !== last) await T.dailyReport(tg, id, last);
+    if (last && last !== today()) await report(last);
     T.setState({ last_day: today() });
 
     const r = await runSession(cfg, id);
     if (r.skipped) {
       if (trigger !== "tự động") await send(`😴 ${r.reason}`);
       // Hết ngân sách token hôm nay → gửi báo cáo ngày (1 lần).
-      if (T.state().reported !== today()) await T.dailyReport(tg, id, today(), r.reason);
+      await report(today(), r.reason);
       return r;
     }
     // Chỉ nhắn khi người dùng tự gõ /run. Còn lại: mỗi ngày 1 báo cáo, để không spam.
@@ -96,6 +116,8 @@ async function main() {
   console.log(`✅ Agent đang chạy: https://t.me/${me.username}`);
   console.log(`   DID: ${id.did}`);
   console.log("   Dừng chương trình này (tắt máy / đóng cửa sổ / dừng container) = agent nghỉ.\n");
+
+  setInterval(reportYesterday, 60_000);
 
   // Vòng chạy liên tục: mỗi vòng = 1 việc. Xong việc → nghỉ 30 giây rồi làm việc tiếp; hết việc → nghỉ 15 phút; hết token → nghỉ 30 phút.
   (async () => {

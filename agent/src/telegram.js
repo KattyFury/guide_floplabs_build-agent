@@ -47,13 +47,17 @@ export const COMMANDS = [
 ];
 
 // Mọi tin nhắn đều kèm dòng gợi ý lệnh ở cuối, để người dùng luôn biết mình gõ được gì.
+// Trả về true nếu gửi được hết.
 export async function send(tg, text, chatId = state().owner) {
-  if (!chatId) return console.log(`(chưa có chủ bot, không gửi được) ${text}`);
+  if (!chatId) return console.log(`(chưa có chủ bot, không gửi được) ${text}`), false;
   text += FOOTER;
+  let ok = true;
   for (let i = 0; i < text.length; i += 4000)
-    await tg("sendMessage", { chat_id: chatId, text: text.slice(i, i + 4000), disable_web_page_preview: true }).catch((e) =>
-      console.log(`⚠️ ${e.message}`),
-    );
+    await tg("sendMessage", { chat_id: chatId, text: text.slice(i, i + 4000), disable_web_page_preview: true }).catch((e) => {
+      ok = false;
+      console.log(`⚠️ ${e.message}`);
+    });
+  return ok;
 }
 
 export async function statusText(cfg, id) {
@@ -72,18 +76,18 @@ export async function statusText(cfg, id) {
   ].join("\n");
 }
 
-// Báo cáo 1 ngày: gửi khi hết ngân sách token trong ngày, hoặc hôm sau nếu hôm đó dừng sớm.
+// Báo cáo 1 ngày: gửi khi hết ngân sách token trong ngày, hoặc 7h sáng hôm sau (0h UTC) nếu hôm đó dừng sớm.
+// Chỉ đánh dấu "đã báo cáo" khi gửi được — mất mạng thì lần sau gửi lại.
 export async function dailyReport(tg, id, date, why = "") {
   const d = loadMemory().days[date];
-  setState({ reported: date });
-  if (!d) return;
+  if (!d) return setState({ reported: date });
   let s = { score: "?", rank: null };
   try {
     s = await kibble.score(id.did);
   } catch {}
   const judged = Object.values(loadMemory().judged).filter((j) => j.at?.startsWith(date));
   const useful = judged.filter((j) => j.verdict === "useful").length;
-  await send(
+  const ok = await send(
     tg,
     [
       `📊 Báo cáo ngày ${date}`,
@@ -95,6 +99,7 @@ export async function dailyReport(tg, id, date, why = "") {
       .filter(Boolean)
       .join("\n"),
   );
+  if (ok) setState({ reported: date });
 }
 
 // Người nhắn đầu tiên thành chủ bot. Trả về true nếu tin nhắn là của chủ.
