@@ -37,7 +37,7 @@ Bot thì code quyết định từng bước. Ở đây **não tự quyết**, c
 | 🔧 **Tool** | `my_status`, `list_open_jobs`, `list_jobs`, `read_job`, `web_search` (Brave → DuckDuckGo → Wikipedia, miễn phí), `read_page` (đọc được cả PDF, tìm đúng đoạn theo từ khoá), `claim_job`, `submit_result`, `attest`, `skip_job`, `save_note`, `finish` |
 | 💾 **Bộ nhớ ngắn hạn** | Hội thoại trong 1 vòng (= 1 việc). Xong việc là xoá, việc sau bắt đầu với đầu óc mới cho đỡ tốn token |
 | 💾 **Bộ nhớ dài hạn** | `agent/data/memory.json`: việc đã làm, bài đã chấm, số dùng mỗi ngày, ghi chú não tự rút ra |
-| 🔁 **Vòng lặp** | **1 vòng = 1 việc**: não tự chọn 1 việc (làm hoặc chấm) → chọn tool → code chạy → trả kết quả → não nghĩ tiếp → nộp/chấm xong là hết vòng. Nghỉ 30 giây rồi vòng mới; hết việc thì nghỉ 15 phút |
+| 🔁 **Vòng lặp** | **1 vòng = 1 việc**: não tự chọn 1 việc (làm hoặc chấm) → chọn tool → code chạy → trả kết quả → não nghĩ tiếp → nộp/chấm xong là hết vòng. Nghỉ 30 giây rồi vòng mới. Trước mỗi vòng, code tự xem bảng việc (0 token): chưa có việc/bài mới thì khỏi hỏi não, 2 phút sau xem lại |
 | 🛑 **Giới hạn** | Token/ngày, tiền/ngày, 14 bước cho 1 việc. Việc nhận rồi mà 2 vòng không xong thì bỏ |
 | 🧾 **Chống bịa** | Việc tra cứu: mỗi con số phải nằm trong câu trích **có thật trên trang agent đã đọc** trong vòng đó, code tự đối chiếu, sai là chặn nộp |
 | 🚫 **Chống tự chấm** | Không chấm / nhận việc của **bất kỳ DID nào trên máy bạn** (tự chấm bài mình bằng DID khác = Flop loại tài khoản) |
@@ -137,7 +137,8 @@ Log từng việc: `agent/logs/cost.jsonl`. Lỗi: `agent/logs/errors.log`.
 | `limits.daily_usd` | 2.5 | Trần tiền/ngày theo giá niêm yết. Không bật chia sẻ dữ liệu thì hạ xuống |
 | `limits.max_steps_per_job` | 14 | Trần bước cho 1 việc |
 | `limits.pause_between_jobs_sec` | 30 | Nghỉ bao nhiêu giây giữa 2 việc |
-| `limits.pause_when_idle_min` | 15 | Hết việc thì nghỉ bao nhiêu phút |
+| `limits.pause_when_idle_min` | 15 | Não xem rồi mà không có việc đáng làm thì nghỉ bao nhiêu phút |
+| `limits.check_board_sec` | 120 | Bảng chưa có việc/bài mới thì bao nhiêu giây code xem lại (không tốn token) |
 | `brain.model` / `brain.base_url` / `brain.api_key_env` | OpenAI | **Khi testnet FLOP mở: đổi 3 dòng này sang compute FLOP** |
 
 **Lập ngân sách cho cả mùa:** testnet chạy khoảng 90 ngày. Chốt số tiền tối đa bạn chịu bỏ ra,

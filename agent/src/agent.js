@@ -64,7 +64,8 @@ Each run handles exactly ONE job, then ends automatically. Pick the most valuabl
 2. Else pick an open job you can complete WELL. RESEARCH FIRST, CLAIM LAST:
    list_open_jobs → read_job → web_search → read_page (with find=keywords) until you have the exact answer
    quoted from an official source → claim_job → submit_result. If you cannot do it well, call skip_job (do not claim)
-   so you never look at it again.
+   so you never look at it again. skip_job hides a job for 3 days: use it ONLY for jobs you cannot do
+   (vague, unverifiable, private data). Never skip a doable job just because you pick another one this run.
 3. Else judge one delivered job: list_jobs → read_job → verify facts if unsure → attest.
 4. Call finish only after you checked BOTH list_open_jobs and list_jobs and nothing is worth doing.
 
@@ -125,7 +126,7 @@ const TOOLS = [
     verdict: { type: "string", enum: ["useful", "not"] },
     reason: { type: "string", description: "one specific sentence, max 220 chars, English" },
   }, ["job_id", "verdict", "reason"]),
-  fn("skip_job", "Remember that this open job is not worth doing, so it is hidden from list_open_jobs from now on.", {
+  fn("skip_job", "Hide an open job you CANNOT do well (vague, unverifiable, needs private data) for 3 days. Not for doable jobs. Max 2 per run.", {
     job_id: { type: "string" },
     reason: { type: "string", description: "short reason" },
   }, ["job_id", "reason"]),
@@ -136,6 +137,8 @@ const TOOLS = [
 const cut = (s, n) => (String(s || "").length > n ? String(s).slice(0, n) + " …" : String(s || ""));
 const oneLine = (s) => String(s || "").replace(/\s*\n+\s*/g, " / ").replace(/\|/g, "/");
 
+let lastIdleBoard = ""; // danh sách việc lúc não xem lần trước mà không làm gì
+
 // ---------- Chạy 1 vòng = 1 việc (làm 1 việc HOẶC chấm 1 bài) ----------
 export async function runSession(cfg, id, log = console.log) {
   const L = cfg.limits;
@@ -144,11 +147,6 @@ export async function runSession(cfg, id, log = console.log) {
   if (day.tokens >= L.daily_tokens) return { skipped: true, reason: `Hôm nay đã dùng đủ ${L.daily_tokens.toLocaleString("en")} token.` };
   if (day.cost >= L.daily_usd) return { skipped: true, reason: `Hôm nay đã chạm trần $${L.daily_usd}.` };
 
-  startRun(`kibble ${today()}`);
-  day.sessions++;
-  const convId = `kibble-${id.did.slice(-8)}-${Date.now()}`;
-  const done = []; // việc xong trong vòng này (0 hoặc 1)
-  const webUses = {};
   for (const [k, w] of Object.entries(mem.worked)) {
     if (w.status !== "claimed") continue;
     w.tries = (w.tries || 0) + 1;
@@ -159,6 +157,31 @@ export async function runSession(cfg, id, log = console.log) {
     }
   }
   const claimed = new Set(Object.keys(mem.worked).filter((k) => mem.worked[k].status === "claimed"));
+  const mine = ownedDids().add(id.did);
+  const canWork = (j) => j.status === "open" && !mine.has(j.poster_did) && !mem.worked[j.job_id] && !mem.skipped[j.job_id];
+  const canJudge = (j) =>
+    (j.status === "delivered" || (j.status === "attested" && (j.useful_n || 0) + (j.not_n || 0) < 2)) &&
+    j.result && !mem.judged[j.job_id] && !mem.worked[j.job_id] && !mine.has(j.poster_did) && !mine.has(j.worker_did);
+
+  // Xem bảng bằng code trước (0 token): không có việc mới / bài mới, hoặc vẫn đúng mấy việc não vừa xem
+  // mà không làm, thì khỏi hỏi não.
+  let seen = "";
+  if (!claimed.size) {
+    try {
+      const { jobs } = await kibble.board();
+      seen = jobs.filter((j) => canWork(j) || canJudge(j)).map((j) => j.job_id).sort().join(",");
+      if (!seen || seen === lastIdleBoard) return { idle: true, reason: "Chưa có việc mới để làm hay bài mới để chấm." };
+    } catch (e) {
+      return { idle: true, reason: `Không đọc được bảng việc Kibble (${e.message}).` };
+    }
+  }
+
+  startRun(`kibble ${today()}`);
+  day.sessions++;
+  const convId = `kibble-${id.did.slice(-8)}-${Date.now()}`;
+  const done = []; // việc xong trong vòng này (0 hoặc 1)
+  const webUses = {};
+  let skips = 0;
   let summary = "";
   mem.log ||= [];
 
@@ -177,7 +200,6 @@ export async function runSession(cfg, id, log = console.log) {
     { role: "user", content: goal() },
   ];
 
-  const mine = ownedDids().add(id.did);
   const findJob = async (job_id) => (await kibble.board()).jobs.find((x) => x.job_id === job_id);
   const webBudget = (key) => (webUses[key] = (webUses[key] || 0) + 1) > 6;
 
@@ -195,15 +217,14 @@ export async function runSession(cfg, id, log = console.log) {
     },
     async list_open_jobs({ limit = 10 }) {
       const rows = (await kibble.board()).jobs
-        .filter((j) => j.status === "open" && !mine.has(j.poster_did) && !mem.worked[j.job_id] && !mem.skipped[j.job_id])
+        .filter(canWork)
         .slice(0, Math.min(limit, 15))
         .map((j) => `${j.job_id} | ${j.category} | ${cut(j.title, 110)}`);
       return rows.join("\n") || "No open jobs right now.";
     },
     async list_jobs({ limit = 10 }) {
       const rows = (await kibble.board()).jobs
-        .filter((j) => j.status === "delivered" || (j.status === "attested" && (j.useful_n || 0) + (j.not_n || 0) < 2))
-        .filter((j) => j.result && !mem.judged[j.job_id] && !mem.worked[j.job_id] && !mine.has(j.poster_did) && !mine.has(j.worker_did))
+        .filter(canJudge)
         .slice(0, Math.min(limit, 15))
         .map((j) => `${j.job_id} | ${cut(j.title, 90)} | result: ${cut(j.result, 90)} | useful ${j.useful_n || 0} / not ${j.not_n || 0}`);
       return rows.join("\n") || "No delivered jobs waiting right now.";
@@ -290,6 +311,7 @@ export async function runSession(cfg, id, log = console.log) {
       return "Posted.";
     },
     async skip_job({ job_id, reason }) {
+      if (++skips > 2) return "BLOCKED: max 2 skips per run. Do a job you can do, judge one, or finish.";
       mem.skipped[job_id] = { at: new Date().toISOString(), reason: cut(reason, 100) };
       return "Skipped. Pick another job, or judge one with list_jobs.";
     },
@@ -351,6 +373,7 @@ export async function runSession(cfg, id, log = console.log) {
   } finally {
     saveMemory(mem);
   }
+  lastIdleBoard = done.length ? "" : seen;
   const run = endRun({ results: day.results, attests: day.attests, steps });
   return { summary, done, steps, cost: run, day };
 }

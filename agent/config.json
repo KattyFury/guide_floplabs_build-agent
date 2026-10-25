@@ -11,11 +11,12 @@
   },
 
   "limits": {
-    "_ghi_chu": "daily_tokens = trần token/ngày (OpenAI cho model mini miễn phí 2.5 triệu/ngày khi bật chia sẻ dữ liệu; để 1,5 triệu cho chắc) · daily_usd = trần tiền/ngày (tính theo giá niêm yết, phòng khi KHÔNG bật chia sẻ) · max_steps_per_job = trần bước cho 1 việc · pause_between_jobs_sec = nghỉ bao nhiêu giây giữa 2 việc · pause_when_idle_min = hết việc thì nghỉ bao nhiêu phút.",
+    "_ghi_chu": "daily_tokens = trần token/ngày (OpenAI cho model mini miễn phí 2.5 triệu/ngày khi bật chia sẻ dữ liệu; để 1,5 triệu cho chắc) · daily_usd = trần tiền/ngày (tính theo giá niêm yết, phòng khi KHÔNG bật chia sẻ) · max_steps_per_job = trần bước cho 1 việc · pause_between_jobs_sec = nghỉ bao nhiêu giây giữa 2 việc · pause_when_idle_min = não xem rồi mà không có việc đáng làm thì nghỉ bao nhiêu phút · check_board_sec = bảng chưa có việc/bài mới thì bao nhiêu giây code xem lại (không tốn token).",
     "daily_tokens": 1500000,
     "daily_usd": 2.5,
     "max_steps_per_job": 14,
     "pause_between_jobs_sec": 30,
-    "pause_when_idle_min": 15
+    "pause_when_idle_min": 15,
+    "check_board_sec": 120
   }
 }

@@ -138,7 +138,6 @@ async function session(trigger) {
     return null;
   }
   running = true;
-  console.log(`→ việc mới (${trigger}) ${new Date().toLocaleTimeString()}`);
   try {
     // Sang ngày mới mà chưa báo cáo hôm qua → báo hôm qua trước.
     const last = T.state().last_day;
@@ -146,6 +145,12 @@ async function session(trigger) {
     T.setState({ last_day: today() });
 
     const r = await runSession(cfg, id);
+    if (r.idle) {
+      // Bảng chưa có gì mới → không hỏi não, chỉ báo khi người dùng tự gõ /run.
+      if (trigger !== "tự động" && trigger !== "khởi động") await send(`😴 ${r.reason}`);
+      return r;
+    }
+    console.log(`→ việc mới (${trigger}) ${new Date().toLocaleTimeString()}`);
     if (r.skipped) {
       if (trigger !== "tự động") await send(`😴 ${r.reason}`);
       // Hết ngân sách token hôm nay → gửi báo cáo ngày (1 lần).
@@ -202,7 +207,8 @@ async function main() {
   setInterval(checkAnswers, 2 * 60_000);
   watchRoom(); // đọc room kibble liên tục để bắt bài nộp cho việc mình đăng
 
-  // Vòng chạy liên tục: mỗi vòng = 1 việc. Xong việc → nghỉ 30 giây rồi làm việc tiếp; hết việc → nghỉ 15 phút; hết token → nghỉ 30 phút.
+  // Vòng chạy liên tục: mỗi vòng = 1 việc. Xong việc → nghỉ 30 giây rồi làm việc tiếp; bảng chưa có gì mới → xem lại sau 2 phút
+  // (code tự xem, 0 token); não xem rồi mà không có việc đáng làm → nghỉ 15 phút; hết token → nghỉ 30 phút.
   (async () => {
     const L = cfg.limits;
     for (;;) {
@@ -210,6 +216,7 @@ async function main() {
       if (!T.state().paused) {
         const r = await session(wake ? "tự động" : "khởi động");
         if (r && !r.skipped && !r.error && r.done.length) wait = L.pause_between_jobs_sec; // vừa xong 1 việc → làm việc tiếp
+        if (r?.idle) wait = L.check_board_sec;
         if (r?.skipped) wait = 30 * 60;
       }
       await new Promise((res) => {
