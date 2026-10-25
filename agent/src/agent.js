@@ -170,9 +170,9 @@ export async function runSession(cfg, id, log = console.log) {
     try {
       const { jobs } = await kibble.board();
       seen = jobs.filter((j) => canWork(j) || canJudge(j)).map((j) => j.job_id).sort().join(",");
-      if (!seen || seen === lastIdleBoard) return { idle: true, reason: "Chưa có việc mới để làm hay bài mới để chấm." };
+      if (!seen || seen === lastIdleBoard) return { idle: true, done: [], reason: "Chưa có việc mới để làm hay bài mới để chấm." };
     } catch (e) {
-      return { idle: true, reason: `Không đọc được bảng việc Kibble (${e.message}).` };
+      return { idle: true, done: [], reason: `Không đọc được bảng việc Kibble (${e.message}).` };
     }
   }
 
