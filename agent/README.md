@@ -152,6 +152,7 @@ Agent **nhắn Telegram ngay** khi gặp lỗi, không im lặng.
 |---|---|
 | `Chưa có key API` / `Key API sai` | Mở `agent/.env`, điền `OPENAI_API_KEY` đúng |
 | `Tài khoản OpenAI hết tiền` | Nạp tại platform.openai.com → Billing |
+| `OpenAI hỏng … Đang dùng Claude` | Có key Claude dự phòng nên agent vẫn chạy. Vẫn nên nạp/sửa OpenAI (não chính). Muốn bật dự phòng: điền `ANTHROPIC_API_KEY` trong `agent/.env` rồi chạy `npm install` trong thư mục `agent` |
 | `Không thấy data/<tên>.json` | Chưa tạo DID: `node scripts/generate-did.js <tên>` |
 | `Kibble 5xx` | Kibble chạy server free nên hay chậm. Agent tự thử lại ở việc sau |
 | Không thấy bot trả lời | Máy đang tắt, hoặc chưa bấm `CAI-TU-CHAY.bat` / `CHAY-AGENT.bat` |

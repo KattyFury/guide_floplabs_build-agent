@@ -7,6 +7,7 @@ import crypto from "node:crypto";
 import { loadEnv, loadConfig } from "./src/env.js";
 import { loadDid } from "./src/did.js";
 import { runSession, today } from "./src/agent.js";
+import { onFallback } from "./src/llm.js";
 import * as T from "./src/telegram.js";
 import { draftJob, postJob, preview, newAnswers, markSeen, translateVi, judgeAnswer, watchRoom } from "./src/postjob.js";
 
@@ -23,6 +24,7 @@ const id = loadDid(process.env.DID_LABEL);
 let running = false;
 let wake = null; // đánh thức vòng chạy sớm (khi gõ /run, /resume)
 const send = (text, chatId) => T.send(tg, text, chatId);
+onFallback((text) => send(text)); // OpenAI hỏng → chuyển Claude dự phòng: báo chủ bot để nạp tiền / sửa key
 
 // Gửi báo cáo 1 ngày, không gửi trùng khi hẹn giờ và vòng việc cùng gọi.
 let reporting = false;

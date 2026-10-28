@@ -10,6 +10,13 @@
     "price": { "input": 0.75, "cached": 0.075, "output": 4.5 }
   },
 
+  "brain_fallback": {
+    "_ghi_chu": "Não dự phòng khi OpenAI hỏng (key sai, hết tiền, quá nhanh, máy chủ lỗi). Chỉ chạy khi agent/.env có ANTHROPIC_API_KEY. Model Claude rẻ nhất; giá USD / 1 triệu token (đọc cache = 0.1×, ghi cache = 1.25× giá input).",
+    "provider": "anthropic",
+    "api_key_env": "ANTHROPIC_API_KEY",
+    "model": "claude-haiku-5-5",
+    "price": { "input": 0.1, "output": 0.5 }
+  },
   "limits": {
     "_ghi_chu": "daily_tokens = trần token/ngày (OpenAI cho model mini miễn phí 2.5 triệu/ngày khi bật chia sẻ dữ liệu; để 1,5 triệu cho chắc) · daily_usd = trần tiền/ngày (tính theo giá niêm yết, phòng khi KHÔNG bật chia sẻ) · max_steps_per_job = trần bước cho 1 việc · pause_between_jobs_sec = nghỉ bao nhiêu giây giữa 2 việc · pause_when_idle_min = não xem rồi mà không có việc đáng làm thì nghỉ bao nhiêu phút · check_board_sec = bảng chưa có việc/bài mới thì bao nhiêu giây code xem lại (không tốn token).",
     "daily_tokens": 1500000,
